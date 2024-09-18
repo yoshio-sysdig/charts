@@ -1,0 +1,51 @@
+global:
+  clusterConfig:
+    name: yoshi-home-lab
+  sysdig:
+    region: au1
+    accessKey: <ACCESS_KEY>
+  kspm:
+    deploy: false
+
+agent:
+  sysdig:
+    settings:
+      sysdig_api_endpoint: https://app.au1.sysdig.com
+      host_scanner:
+        enabled: true
+      kspm_analyzer:
+        enabled: true
+  # extraVolumes and mounts sections are needed for the host-scanner and kspm-analyzer now within the agent
+  extraVolumes:
+    volumes:
+    - name: root-vol
+      hostPath:
+        path: /
+    - name: tmp-vol
+      hostPath:
+        path: /tmp
+    mounts:
+    - mountPath: /host
+      name: root-vol
+      readOnly: true
+    # The host's tmp directory needs to be writeable for kspm-analyzer to create the scripts it runs.
+    - mountPath: /host/tmp
+      name: tmp-vol
+
+nodeAnalyzer:
+  enabled: false
+
+admissionController:
+  enabled: false
+
+clusterShield:
+  enabled: true
+  cluster_shield:
+    features:
+      audit:
+        enabled: true
+      container_vulnerability_management:
+        enabled: true
+      posture:
+        enabled: true
+  
