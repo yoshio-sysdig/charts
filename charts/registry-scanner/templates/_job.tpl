@@ -110,6 +110,7 @@
                 name: {{ .Values.existingSecretName }}
                 {{- end }}
                 key: registryUser
+          {{- if ne .Values.config.registryType "ocp" }}
           - name: REGISTRYSCANNER_REGISTRY_PASSWORD
             valueFrom:
               secretKeyRef:
@@ -120,6 +121,7 @@
                 {{- end }}
                 key: registryPassword
           {{- end }}
+          {{- end }}
           {{ if .Values.config.parallelGoRoutines }}
           - name: GROUP_LIMIT
             value: "{{ .Values.config.parallelGoRoutines }}"
@@ -128,6 +130,8 @@
           - name: REGISTRYSCANNER_PROFILING_ENABLED
             value: /profiling
           {{- end }}
+          - name: REGISTRYSCANNER_CRONJOB_SCHEDULE
+            value: {{ .Values.cronjob.schedule | quote }}
           {{- if .Values.extraEnvVars }}
           {{- toYaml .Values.extraEnvVars | nindent 10 }}
           {{- end }}

@@ -10,6 +10,45 @@ Manual edits are supported only below '## Change Log' and should be used
 exclusively to fix incorrect entries and not to add new ones.
 
 ## Change Log
+# v0.9.11
+### Chores
+* **ci** [fc5ecbaa](https://github.com/sysdiglabs/charts/commit/fc5ecbaaee10ec74f09a77a40be626f34e7dd292): bump bitnami/kubectl image references ([#1946](https://github.com/sysdiglabs/charts/issues/1946))
+# v0.9.10
+### Chores
+* **rapid-response** [fe95b73e](https://github.com/sysdiglabs/charts/commit/fe95b73e7f31cd68263280d86ad2dd444328a538): bump rapid-response version to 0.4.8 ([#1936](https://github.com/sysdiglabs/charts/issues/1936))
+# v0.9.9
+### Chores
+* **rapid-response** [8595fe2d](https://github.com/sysdiglabs/charts/commit/8595fe2d91b52c9f041a9d50b0c9a5b0b9440ae4): bump rapid-response version to 0.4.7 ([#1931](https://github.com/sysdiglabs/charts/issues/1931))
+# v0.9.8
+### Chores
+* **ci** [e222f21d](https://github.com/sysdiglabs/charts/commit/e222f21de483926259c9574e4c2d9679681b9ddb): bump bitnami/kubectl image references ([#1892](https://github.com/sysdiglabs/charts/issues/1892))
+# v0.9.7
+### Chores
+* **node-analyzer,kspm-collector,agent,rapid-response** [fccdc179](https://github.com/sysdiglabs/charts/commit/fccdc1790d42e22c3d605303a4d5f904a0e91439): bump the bitnami/kubectl image reference in charts ([#1772](https://github.com/sysdiglabs/charts/issues/1772))
+# v0.9.6
+### New Features
+* **common,admission-controller,agent,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [07abc204](https://github.com/sysdiglabs/charts/commit/07abc204fd61e4692b48cf36babf0eecae6d154b): Add support for the in1 region ([#1847](https://github.com/sysdiglabs/charts/issues/1847))
+# v0.9.5
+### New Features
+* **rapid-response** [b1bab244](https://github.com/sysdiglabs/charts/commit/b1bab244959765a35b60397500b66166b7e13831): update list of supported architectures ([#1837](https://github.com/sysdiglabs/charts/issues/1837))
+# v0.9.4
+### Chores
+* **rapid-response** [ea37f363](https://github.com/sysdiglabs/charts/commit/ea37f363d44e1c14a2702eb74f7c83f5331215a4): bump rapid-response version to 0.4.6 ([#1835](https://github.com/sysdiglabs/charts/issues/1835))
+# v0.9.3
+### Chores
+* **rapid-response** [ca429ba6](https://github.com/sysdiglabs/charts/commit/ca429ba64c4e067c06349f186a6ac1c8b63e3a6f): bump rapid-response version to 0.4.1 ([#1833](https://github.com/sysdiglabs/charts/issues/1833))
+# v0.9.2
+### Chores
+* **agent,cluster-shield,sysdig-deploy,rapid-response,kspm-collector,cluster-scanner** [87059f19](https://github.com/sysdiglabs/charts/commit/87059f1992b6bf1c133ef96937ea2da90fa7d8a1): bump helm-unittest to v0.5.1 ([#1785](https://github.com/sysdiglabs/charts/issues/1785))
+# v0.9.1
+### New Features
+* **agent,kspm-collector,node-analyzer,rapid-response** [c0359500](https://github.com/sysdiglabs/charts/commit/c0359500433949727357cfd918d43d9a0e0dbe11): update kubectl images used for testing purpose ([#1758](https://github.com/sysdiglabs/charts/issues/1758))
+# v0.9.0
+### New Features
+* **common** [0061b52d](https://github.com/sysdiglabs/charts/commit/0061b52d51f43e1e4d5e2bdf1145be28287d5ce6): add me2 region support ([#1591](https://github.com/sysdiglabs/charts/issues/1591))
+# v0.8.5
+### Bug Fixes
+* **agent,kspm-collector,node-analyzer,rapid-response,sysdig-deploy** [6b1f5818](https://github.com/sysdiglabs/charts/commit/6b1f5818836af26e5d83621049c96ae07d1fe12c): Set test rollout namespace based on required service accounts ([#1593](https://github.com/sysdiglabs/charts/issues/1593))
 # v0.8.4
 ### Chores
 * **rapid-response** [50a90678](https://github.com/sysdiglabs/charts/commit/50a9067882a4b441188cd4f8149528a892a29455): bump rapid-response version to 0.4.0 ([#1476](https://github.com/sysdiglabs/charts/issues/1476))

@@ -10,6 +10,72 @@ Manual edits are supported only below '## Change Log' and should be used
 exclusively to fix incorrect entries and not to add new ones.
 
 ## Change Log
+# v0.16.2
+### Chores
+* **ci** [fc5ecbaa](https://github.com/sysdiglabs/charts/commit/fc5ecbaaee10ec74f09a77a40be626f34e7dd292): bump bitnami/kubectl image references ([#1946](https://github.com/sysdiglabs/charts/issues/1946))
+# v0.16.1
+### Chores
+* **ci** [e222f21d](https://github.com/sysdiglabs/charts/commit/e222f21de483926259c9574e4c2d9679681b9ddb): bump bitnami/kubectl image references ([#1892](https://github.com/sysdiglabs/charts/issues/1892))
+# v0.16.0
+### Chores
+* **kspm-collector,node-analyzer** [d372a3c0](https://github.com/sysdiglabs/charts/commit/d372a3c01552094c8598493e9d1092e66fade67d): release kspm-collector & node-analyzer ([#1875](https://github.com/sysdiglabs/charts/issues/1875))
+# v0.15.9
+### Chores
+* **node-analyzer,kspm-collector,agent,rapid-response** [fccdc179](https://github.com/sysdiglabs/charts/commit/fccdc1790d42e22c3d605303a4d5f904a0e91439): bump the bitnami/kubectl image reference in charts ([#1772](https://github.com/sysdiglabs/charts/issues/1772))
+# v0.15.8
+### New Features
+* **common,admission-controller,agent,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [07abc204](https://github.com/sysdiglabs/charts/commit/07abc204fd61e4692b48cf36babf0eecae6d154b): Add support for the in1 region ([#1847](https://github.com/sysdiglabs/charts/issues/1847))
+# v0.15.7
+### Chores
+* **agent,cluster-shield,sysdig-deploy,rapid-response,kspm-collector,cluster-scanner** [87059f19](https://github.com/sysdiglabs/charts/commit/87059f1992b6bf1c133ef96937ea2da90fa7d8a1): bump helm-unittest to v0.5.1 ([#1785](https://github.com/sysdiglabs/charts/issues/1785))
+# v0.15.6
+### Bug Fixes
+* **kspm-collector,node-analyzer** [919bac75](https://github.com/sysdiglabs/charts/commit/919bac7579929a11ca2f19fd39d9600271c345fe): fix pod failure in NATS connection error ([#1773](https://github.com/sysdiglabs/charts/issues/1773))
+# v0.15.5
+### New Features
+* **agent,kspm-collector,node-analyzer,rapid-response** [c0359500](https://github.com/sysdiglabs/charts/commit/c0359500433949727357cfd918d43d9a0e0dbe11): update kubectl images used for testing purpose ([#1758](https://github.com/sysdiglabs/charts/issues/1758))
+# v0.15.4
+### New Features
+* **kspm-collector** [b751ae90](https://github.com/sysdiglabs/charts/commit/b751ae900f4cb865d4ccd7f428eef333c17d0615): bump kspm-collector version to 0.15.4 ([#1747](https://github.com/sysdiglabs/charts/issues/1747))
+# v0.15.3
+### Others
+* [549e723e](https://github.com/sysdiglabs/charts/commit/549e723e11f0cb0deff59715f5ed2d26bdf4568c)
+# v0.15.2
+### New Features
+* **kspm-collector** [5d917b1c](https://github.com/sysdiglabs/charts/commit/5d917b1c64661edd997bc4f81d1461a28b99eab2): Added permission for secrets ([#1715](https://github.com/sysdiglabs/charts/issues/1715))
+# v0.15.1
+### New Features
+* **kspm-collector,node-analyzer** [03e67add](https://github.com/sysdiglabs/charts/commit/03e67adde86b18ef4f96dfe58e6425534a3b4ac0): release kspm-collector & node-analyzer with support for CRN & name from IBM cloud MDS ([#1712](https://github.com/sysdiglabs/charts/issues/1712))
+# v0.15.0
+### New Features
+* **node-analyzer,kspm-collector** [7d1201fc](https://github.com/sysdiglabs/charts/commit/7d1201fc5d1bfc18e9cfc24ed621e76773405d64): Skip TLS certificate verification when using TLS Proxy & bump applications version ([#1665](https://github.com/sysdiglabs/charts/issues/1665))
+# v0.14.2
+### Chores
+* **kspm-collector,kspm-collector** [e885b38c](https://github.com/sysdiglabs/charts/commit/e885b38ccdf152db9227d0ecaf3b281f9f10752a): version bump of kspm-collector & node-analyzer ([#1650](https://github.com/sysdiglabs/charts/issues/1650))
+# v0.14.1
+### Chores
+* **node-analyzer,kspm-collector** [53da744e](https://github.com/sysdiglabs/charts/commit/53da744e4aff66f4fdc86a462a4e72d7ed94ec92): Bump KSPM to 1.41.2 & Node Analyzer to 1.38.1 ([#1643](https://github.com/sysdiglabs/charts/issues/1643))
+# v0.14.0
+### New Features
+* **kspm-collector** [0b82d816](https://github.com/sysdiglabs/charts/commit/0b82d8165acdc7e34aea690d03422a7cd5a7b265): Deployment annotations and fix label render issue - replace [#1626](https://github.com/sysdiglabs/charts/issues/1626) ([#1639](https://github.com/sysdiglabs/charts/issues/1639))
+# v0.13.0
+### Chores
+* **node-analyzer,kspm-collector** [bf10775e](https://github.com/sysdiglabs/charts/commit/bf10775e88d40a12e1e3058d96f3ecdf6138c715): bump node-analyzer to v1.41.0 and kspm-collector to v1.38.0 ([#1627](https://github.com/sysdiglabs/charts/issues/1627))
+# v0.12.0
+### New Features
+* **common** [0061b52d](https://github.com/sysdiglabs/charts/commit/0061b52d51f43e1e4d5e2bdf1145be28287d5ce6): add me2 region support ([#1591](https://github.com/sysdiglabs/charts/issues/1591))
+# v0.11.2
+### Bug Fixes
+* **agent,kspm-collector,node-analyzer,rapid-response,sysdig-deploy** [6b1f5818](https://github.com/sysdiglabs/charts/commit/6b1f5818836af26e5d83621049c96ae07d1fe12c): Set test rollout namespace based on required service accounts ([#1593](https://github.com/sysdiglabs/charts/issues/1593))
+# v0.11.1
+### Chores
+* **node-analyzer,kspm-collector** [f1023ae1](https://github.com/sysdiglabs/charts/commit/f1023ae129bf5c95b13686bf793130d8fdbc6e50): Bump KSPM to 1.39.1 & Node Analyzer to 1.37.1 ([#1582](https://github.com/sysdiglabs/charts/issues/1582))
+# v0.11.0
+### Chores
+* **node-analyzer,kspm-collector** [d80be00a](https://github.com/sysdiglabs/charts/commit/d80be00a821b0af2f71da6fd04590fcd897e0b4a): Bump KSPM to 1.39.0 & Node Analyzer to 1.37.0 ([#1549](https://github.com/sysdiglabs/charts/issues/1549))
+# v0.10.0
+### Chores
+* **node-analyzer,kspm-collector** [045b5d37](https://github.com/sysdiglabs/charts/commit/045b5d3798eb60ac6bff33f168273dca8a49618b): Bump KSPM to 1.38.0 & Node Analyzer to 1.36.0 ([#1513](https://github.com/sysdiglabs/charts/issues/1513))
 # v0.9.3
 ### Chores
 * **kspm-collector,node-analyzer** [0b43cdef](https://github.com/sysdiglabs/charts/commit/0b43cdef544b2a5d553479027c9065964c6c4829): update cspm agents to UBI image 1.5.8 ([#1469](https://github.com/sysdiglabs/charts/issues/1469))

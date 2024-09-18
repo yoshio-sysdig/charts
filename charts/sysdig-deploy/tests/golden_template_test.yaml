@@ -5,6 +5,32 @@ templates:
   - charts/agent/templates/secrets.yaml
   - charts/nodeAnalyzer/templates/daemonset-node-analyzer.yaml
   - charts/nodeAnalyzer/templates/configmap-benchmark-runner.yaml
+  # For checksums
+  - charts/nodeAnalyzer/templates/clusterrole-node-analyzer.yaml
+  - charts/nodeAnalyzer/templates/clusterrolebinding-node-analyzer.yaml
+  - charts/nodeAnalyzer/templates/configmap-benchmark-runner.yaml
+  - charts/nodeAnalyzer/templates/configmap-host-analyzer.yaml
+  - charts/nodeAnalyzer/templates/configmap-host-scanner.yaml
+  - charts/nodeAnalyzer/templates/configmap-image-analyzer.yaml
+  - charts/nodeAnalyzer/templates/configmap-kspm-analyzer.yaml
+  - charts/nodeAnalyzer/templates/secrets.yaml
+  - charts/nodeAnalyzer/templates/serviceaccount-node-analyzer.yaml
+  - charts/nodeAnalyzer/templates/runtimeScanner/runtime-scanner-configmap.yaml
+kubernetesProvider:
+  scheme:
+    "v1/Node":
+      gvr:
+        version: "v1"
+        resource: "nodes"
+      namespaced: false
+  objects:
+  - apiVersion: v1
+    kind: Node
+    metadata:
+      name: fakenode
+    status:
+      nodeInfo:
+        osImage: fake-os-image
 tests:
   - it: Testing agent and node-analyzer deployed
     set:

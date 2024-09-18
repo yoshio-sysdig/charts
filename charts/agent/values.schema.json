@@ -56,6 +56,7 @@
             "items": {
               "type": "string",
               "enum": [
+                "AUDIT_TAP",
                 "POLICY_EVENTS",
                 "SECURE_AUDIT"
               ]
@@ -63,6 +64,9 @@
           }
         }
       }
+    },
+    "privileged": {
+      "type": "boolean"
     }
   },
   "$defs": {
@@ -78,6 +82,7 @@
           "items": {
             "type": "string",
             "enum": [
+              "AUDIT_TAP",
               "POLICY_EVENTS",
               "ACTIVITY_AUDIT",
               "MONITOR_EVENTS",

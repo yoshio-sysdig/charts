@@ -2,6 +2,21 @@ suite: Test the Readiness Probe Configuration
 templates:
   - templates/daemonset.yaml
   - templates/deployment.yaml
+kubernetesProvider:
+  scheme:
+    "v1/Node":
+      gvr:
+        version: "v1"
+        resource: "nodes"
+      namespaced: false
+  objects:
+  - apiVersion: v1
+    kind: Node
+    metadata:
+      name: fakenode
+    status:
+      nodeInfo:
+        osImage: fake-os-image
 tests:
   - it: "[DaemonSet] Readiness Probe (agent > 12.18.0)"
     set:
@@ -12,10 +27,12 @@ tests:
           path: spec.template.spec.containers[0].readinessProbe
           value:
              httpGet:
+               host: 127.0.0.1
                path: /healthz
                port: 24483
              initialDelaySeconds: 90
-             periodSeconds: 3
+             periodSeconds: 10
+             failureThreshold: 9
     template: templates/daemonset.yaml
   - it: "[DaemonSet] Readiness Probe (agent == 12.18.0)"
     set:
@@ -26,10 +43,12 @@ tests:
           path: spec.template.spec.containers[0].readinessProbe
           value:
             httpGet:
+              host: 127.0.0.1
               path: /healthz
               port: 24483
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
     template: templates/daemonset.yaml
   - it: "[DaemonSet] Readiness Probe (agent < 12.18.0)"
     set:
@@ -45,7 +64,8 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
     template: templates/daemonset.yaml
   - it: "[DaemonSet] Readiness Probe (agent == dev)"
     set:
@@ -61,7 +81,8 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
     template: templates/daemonset.yaml
   - it: "[DaemonSet] Readiness Probe (agent == latest)"
     set:
@@ -77,7 +98,8 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
     template: templates/daemonset.yaml
   - it: "[DelegatedAgentDeployment] Readiness Probe (agent > 12.18.0)"
     set:
@@ -90,10 +112,13 @@ tests:
           path: spec.template.spec.containers[0].readinessProbe
           value:
             httpGet:
+              host: 127.0.0.1
               path: /healthz
               port: 24483
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
+
   - it: "[DelegatedAgentDeployment] Readiness Probe (agent == 12.18.0)"
     set:
       delegatedAgentDeployment:
@@ -105,10 +130,13 @@ tests:
           path: spec.template.spec.containers[0].readinessProbe
           value:
             httpGet:
+              host: 127.0.0.1
               path: /healthz
               port: 24483
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
+
   - it: "[DelegatedAgentDeployment] Readiness Probe (agent < 12.18.0)"
     set:
       delegatedAgentDeployment:
@@ -125,7 +153,9 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
+
   - it: "[DelegatedAgentDeployment] Readiness Probe (agent == dev)"
     set:
       delegatedAgentDeployment:
@@ -142,7 +172,9 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
+
   - it: "[DelegatedAgentDeployment] Readiness Probe (agent == latest)"
     set:
       delegatedAgentDeployment:
@@ -159,18 +191,22 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
+
   - it: Test setting probe delays
     set:
       daemonset:
         probes:
           initialDelay: 5
           periodDelay: 3
+          failureThreshold: 10
       delegatedAgentDeployment:
         deployment:
           probes:
             initialDelay: 5
             periodDelay: 3
+            failureThreshold: 10
         enabled: true
     asserts:
       - equal:
@@ -179,6 +215,9 @@ tests:
       - equal:
           path: spec.template.spec.containers[0].readinessProbe.periodSeconds
           value: 3
+      - equal:
+          path: spec.template.spec.containers[0].readinessProbe.failureThreshold
+          value: 10
 
   - it: "Do not use the HTTP Readiness Probe on GKE Autopilot"
     set:
@@ -196,7 +235,8 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9
 
   - it: "Do not use the HTTP Readiness Probe on GKE Autopilot"
     set:
@@ -213,4 +253,5 @@ tests:
                 - -e
                 - /opt/draios/logs/running
             initialDelaySeconds: 90
-            periodSeconds: 3
+            periodSeconds: 10
+            failureThreshold: 9

@@ -10,6 +10,201 @@ Manual edits are supported only below '## Change Log' and should be used
 exclusively to fix incorrect entries and not to add new ones.
 
 ## Change Log
+# v1.32.2
+### Chores
+* **ci** [fc5ecbaa](https://github.com/sysdiglabs/charts/commit/fc5ecbaaee10ec74f09a77a40be626f34e7dd292): bump bitnami/kubectl image references ([#1946](https://github.com/sysdiglabs/charts/issues/1946))
+# v1.32.1
+### Chores
+* **node-analyzer** [5054a61c](https://github.com/sysdiglabs/charts/commit/5054a61c06d2ba07a2f88d643e4257f2bbf1cea3): bump sysdig/vuln-host-scanner to v0.12.1 ([#1941](https://github.com/sysdiglabs/charts/issues/1941))
+# v1.32.0
+### New Features
+* **node-analyzer** [8b367c36](https://github.com/sysdiglabs/charts/commit/8b367c3679eb339886286cdde67ea4e7686a0b2a): Allow setting parameters for runtime and host scanner probes in Daemoset ([#1940](https://github.com/sysdiglabs/charts/issues/1940))
+# v1.31.7
+### Bug Fixes
+* **node-analyzer** [3e8c4f6e](https://github.com/sysdiglabs/charts/commit/3e8c4f6ef196953c81f4b563b263aa3a221549b2): Reorder volume list ([#1934](https://github.com/sysdiglabs/charts/issues/1934))
+# v1.31.6
+### Bug Fixes
+* **node-analyzer** [f6252060](https://github.com/sysdiglabs/charts/commit/f62520608ef424b423b5aeaf9df60b5b82de6d42): enable eve-integration when eveConnector is deployed [SSPROD-18967] ([#1927](https://github.com/sysdiglabs/charts/issues/1927))
+# v1.31.5
+### Chores
+* **ci** [e222f21d](https://github.com/sysdiglabs/charts/commit/e222f21de483926259c9574e4c2d9679681b9ddb): bump bitnami/kubectl image references ([#1892](https://github.com/sysdiglabs/charts/issues/1892))
+# v1.31.4
+# v1.31.3
+# v1.31.2
+# v1.31.1
+### New Features
+* **node-analyzer** [4315173f](https://github.com/sysdiglabs/charts/commit/4315173f25c64bd1f67c209275e4d03cec1bda54): Added replication controllers to the list of inspected resources ([#1905](https://github.com/sysdiglabs/charts/issues/1905))
+# v1.31.0
+### Chores
+* **node-analyzer,sysdig-deploy** [423695fc](https://github.com/sysdiglabs/charts/commit/423695fcf29dda4db2c3ae2e64abc53b2d278b50): bump sysdig/vuln-host-scanner to v0.11.0 ([#1888](https://github.com/sysdiglabs/charts/issues/1888))
+# v1.30.5
+# v1.30.4
+# v1.30.3
+### Chores
+* **kspm-collector,node-analyzer** [d372a3c0](https://github.com/sysdiglabs/charts/commit/d372a3c01552094c8598493e9d1092e66fade67d): release kspm-collector & node-analyzer ([#1875](https://github.com/sysdiglabs/charts/issues/1875))
+# v1.30.2
+### New Features
+* **agent,node-analyzer** [9c21415e](https://github.com/sysdiglabs/charts/commit/9c21415e63126dbce960d0024bc632ff595ec6d1): add option to set hostNetwork and dnsPolicy ([#1863](https://github.com/sysdiglabs/charts/issues/1863))
+# v1.30.1
+### New Features
+* **node-analyzer** [3bcce318](https://github.com/sysdiglabs/charts/commit/3bcce31812ab03b07dcfe1ea3184abef84e266b9): release node-analyzer with bug fix for host-shield shell tmp folder ([#1860](https://github.com/sysdiglabs/charts/issues/1860))
+# v1.30.0
+### New Features
+* **nodeanalyzer** [2c527dd0](https://github.com/sysdiglabs/charts/commit/2c527dd0121e4f13994824effa6a897189a56685): add tolerations for rke2 master nodes ([#1800](https://github.com/sysdiglabs/charts/issues/1800))
+# v1.29.12
+### New Features
+* **node-analyzer** [53ae07dd](https://github.com/sysdiglabs/charts/commit/53ae07dda3161178017fd006d181b07aa51955a4): Update legacy engine NIA/HostAnalyzer component with security updates ([#1852](https://github.com/sysdiglabs/charts/issues/1852))
+# v1.29.11
+### New Features
+* **nodeanalyzer** [33a305a5](https://github.com/sysdiglabs/charts/commit/33a305a51d1424638c87a16d6cc2cd204295ef9e): bump kspm analyzer version for node analyzer ([#1850](https://github.com/sysdiglabs/charts/issues/1850))
+# v1.29.10
+### Chores
+* **node-analyzer,kspm-collector,agent,rapid-response** [fccdc179](https://github.com/sysdiglabs/charts/commit/fccdc1790d42e22c3d605303a4d5f904a0e91439): bump the bitnami/kubectl image reference in charts ([#1772](https://github.com/sysdiglabs/charts/issues/1772))
+# v1.29.9
+### New Features
+* **common,admission-controller,agent,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [07abc204](https://github.com/sysdiglabs/charts/commit/07abc204fd61e4692b48cf36babf0eecae6d154b): Add support for the in1 region ([#1847](https://github.com/sysdiglabs/charts/issues/1847))
+# v1.29.8
+### Chores
+* **node-analyzer** [761c8f58](https://github.com/sysdiglabs/charts/commit/761c8f587d0f33134ccf403827e83f3b79e7fba4): bump sysdig/vuln-host-scanner to v0.10.2 ([#1810](https://github.com/sysdiglabs/charts/issues/1810))
+# v1.29.7
+### New Features
+* **node-analyzer** [798fee05](https://github.com/sysdiglabs/charts/commit/798fee055cbd3786c1f266f1277752608176a7d4): Change Bottlerocket apiclient and socket volume mounts to ignore non existent files ([#1797](https://github.com/sysdiglabs/charts/issues/1797))
+# v1.29.6
+### Chores
+* **node-analyzer** [c144dca5](https://github.com/sysdiglabs/charts/commit/c144dca52b6ab39d4295f98d4227a76c23ed73a1): bump sysdig/vuln-host-scanner to v0.10.1 ([#1788](https://github.com/sysdiglabs/charts/issues/1788))
+# v1.29.5
+### Chores
+* **node-analyzer** [e986b1f5](https://github.com/sysdiglabs/charts/commit/e986b1f5d92c817c6417105f3e8b65b2564bfe0a): bump sysdig/vuln-runtime-scanner to v1.7.1 ([#1786](https://github.com/sysdiglabs/charts/issues/1786))
+# v1.29.4
+# v1.29.3
+### Bug Fixes
+* **kspm-collector,node-analyzer** [919bac75](https://github.com/sysdiglabs/charts/commit/919bac7579929a11ca2f19fd39d9600271c345fe): fix pod failure in NATS connection error ([#1773](https://github.com/sysdiglabs/charts/issues/1773))
+# v1.29.2
+### New Features
+* **agent,kspm-collector,node-analyzer,rapid-response** [c0359500](https://github.com/sysdiglabs/charts/commit/c0359500433949727357cfd918d43d9a0e0dbe11): update kubectl images used for testing purpose ([#1758](https://github.com/sysdiglabs/charts/issues/1758))
+# v1.29.1
+### Chores
+* **node-analyzer** [fcb47948](https://github.com/sysdiglabs/charts/commit/fcb47948280b55cc964b8a7a1a564923e284bb4e): Bump benchmark runner ([#1675](https://github.com/sysdiglabs/charts/issues/1675))
+# v1.29.0
+### Chores
+* **node-analyzer** [f3b29822](https://github.com/sysdiglabs/charts/commit/f3b29822e8bc3c60f48d0bac678b360eace7e133): bump sysdig/vuln-runtime-scanner to v1.7.0 ([#1750](https://github.com/sysdiglabs/charts/issues/1750))
+# v1.28.0
+### Chores
+* **node-analyzer** [239f22e8](https://github.com/sysdiglabs/charts/commit/239f22e8e2a36e847e1a352212d52c0261ad6b5a): bump sysdig/vuln-host-scanner to v0.10.0 ([#1749](https://github.com/sysdiglabs/charts/issues/1749))
+# v1.27.5
+### Chores
+* **node-analyzer** [c5a7c493](https://github.com/sysdiglabs/charts/commit/c5a7c4931a45a218c319085857f1bdf54df23a23): bump legacy node image analyzer to v0.1.32 ([#1738](https://github.com/sysdiglabs/charts/issues/1738))
+# v1.27.4
+### New Features
+* **node-analyzer** [8229ffce](https://github.com/sysdiglabs/charts/commit/8229ffce6e561735ca587499be796c84af80e072): bump host-scanner to v0.9.1 ([#1739](https://github.com/sysdiglabs/charts/issues/1739))
+# v1.27.3
+### Others
+* [549e723e](https://github.com/sysdiglabs/charts/commit/549e723e11f0cb0deff59715f5ed2d26bdf4568c)
+# v1.27.2
+### Chores
+* **node-analyzer** [7336c1b9](https://github.com/sysdiglabs/charts/commit/7336c1b91aeddb057626f1a456a12a50a47e86d4): bump runtime-scanner to v1.6.12 ([#1737](https://github.com/sysdiglabs/charts/issues/1737))
+# v1.27.1
+### New Features
+* **node-analyzer** [dbe2d40f](https://github.com/sysdiglabs/charts/commit/dbe2d40f15480af19ee1ca6a59b4d936cedca7db): Add flag in order to allow Bottlerocket volumes ([#1699](https://github.com/sysdiglabs/charts/issues/1699))
+# v1.27.0
+### Chores
+* **node-analyzer** [c702f9dc](https://github.com/sysdiglabs/charts/commit/c702f9dc5b58cd0a6c18a2c82a813a524c347e5c): bump host-scanner to v0.9.0 ([#1713](https://github.com/sysdiglabs/charts/issues/1713))
+# v1.26.5
+### Bug Fixes
+* **node-analyzer** [8ac36439](https://github.com/sysdiglabs/charts/commit/8ac36439f8d67ba20f29c9e29ee52b6fc698124f): use correct values for custom CA envs generation ([#1716](https://github.com/sysdiglabs/charts/issues/1716))
+# v1.26.4
+### New Features
+* **kspm-collector,node-analyzer** [03e67add](https://github.com/sysdiglabs/charts/commit/03e67adde86b18ef4f96dfe58e6425534a3b4ac0): release kspm-collector & node-analyzer with support for CRN & name from IBM cloud MDS ([#1712](https://github.com/sysdiglabs/charts/issues/1712))
+# v1.26.3
+### Chores
+* **node-analyzer** [4670c8ab](https://github.com/sysdiglabs/charts/commit/4670c8abb12e776d150f0be469242a5ef0dab392): bump vuln-host-scanner to v0.8.1 ([#1682](https://github.com/sysdiglabs/charts/issues/1682))
+# v1.26.2
+### Chores
+* **node-analyzer** [4a193c1e](https://github.com/sysdiglabs/charts/commit/4a193c1ee0176568700347b0d700de8998c4da91): bump sysdig/vuln-runtime-scanner to v1.6.11 ([#1680](https://github.com/sysdiglabs/charts/issues/1680))
+# v1.26.1
+### New Features
+* **node-analyzer,sysdig** [0d01a78f](https://github.com/sysdiglabs/charts/commit/0d01a78fc90334248a34b4791d07722243cda234): Update legacy engine NIA/HostAnalyzer components with security updates ([#1679](https://github.com/sysdiglabs/charts/issues/1679))
+# v1.26.0
+### New Features
+* **node-analyzer,kspm-collector** [7d1201fc](https://github.com/sysdiglabs/charts/commit/7d1201fc5d1bfc18e9cfc24ed621e76773405d64): Skip TLS certificate verification when using TLS Proxy & bump applications version ([#1665](https://github.com/sysdiglabs/charts/issues/1665))
+# v1.25.0
+### Chores
+* **node-analyzer** [a90c3952](https://github.com/sysdiglabs/charts/commit/a90c3952dd4448806a7e300eac2293965cf9797e): bump sysdig/vuln-host-scanner to v0.8.0 ([#1660](https://github.com/sysdiglabs/charts/issues/1660))
+
+    * * Fixed a memory leak that could happen when disabling backend scanning
+* Fixed an issue that could cause memory spikes
+* Fixed an issue that could cause the host-scanner to detect wrongly the OS when running as a binary
+* Added support for platform scanning
+# v1.24.4
+### New Features
+* **admission-controller,node-analyzer** [9e8cc902](https://github.com/sysdiglabs/charts/commit/9e8cc902897f4185f9f56b825d6741539999fcf9): set dnsPolicy when we allow hostNetwork in the Pod  ([#1652](https://github.com/sysdiglabs/charts/issues/1652))
+# v1.24.3
+### Chores
+* **kspm-collector,kspm-collector** [e885b38c](https://github.com/sysdiglabs/charts/commit/e885b38ccdf152db9227d0ecaf3b281f9f10752a): version bump of kspm-collector & node-analyzer ([#1650](https://github.com/sysdiglabs/charts/issues/1650))
+# v1.24.2
+### Chores
+* **node-analyzer,kspm-collector** [53da744e](https://github.com/sysdiglabs/charts/commit/53da744e4aff66f4fdc86a462a4e72d7ed94ec92): Bump KSPM to 1.41.2 & Node Analyzer to 1.38.1 ([#1643](https://github.com/sysdiglabs/charts/issues/1643))
+# v1.24.1
+# v1.24.0
+### Chores
+* **node-analyzer,kspm-collector** [bf10775e](https://github.com/sysdiglabs/charts/commit/bf10775e88d40a12e1e3058d96f3ecdf6138c715): bump node-analyzer to v1.41.0 and kspm-collector to v1.38.0 ([#1627](https://github.com/sysdiglabs/charts/issues/1627))
+# v1.23.1
+# v1.23.0
+### New Features
+* **common** [0061b52d](https://github.com/sysdiglabs/charts/commit/0061b52d51f43e1e4d5e2bdf1145be28287d5ce6): add me2 region support ([#1591](https://github.com/sysdiglabs/charts/issues/1591))
+# v1.22.7
+### Chores
+* **node-analyzer** [40786f31](https://github.com/sysdiglabs/charts/commit/40786f31e9209f0e64961b95320e633bafab6d67): bump sysdig/vuln-host-scanner to v0.7.5 ([#1605](https://github.com/sysdiglabs/charts/issues/1605))
+# v1.22.6
+### New Features
+* **node-analyzer** [57653634](https://github.com/sysdiglabs/charts/commit/5765363486208c45cf5ec586cdec3bc045582445): Update legacy engine HostAnalyzer component with security updates ([#1603](https://github.com/sysdiglabs/charts/issues/1603))
+# v1.22.5
+### Bug Fixes
+* **agent,kspm-collector,node-analyzer,rapid-response,sysdig-deploy** [6b1f5818](https://github.com/sysdiglabs/charts/commit/6b1f5818836af26e5d83621049c96ae07d1fe12c): Set test rollout namespace based on required service accounts ([#1593](https://github.com/sysdiglabs/charts/issues/1593))
+# v1.22.4
+### Chores
+* **node-analyzer** [618ad521](https://github.com/sysdiglabs/charts/commit/618ad521c063b25d7f8e0a61d4c07e731eb36641): bump sysdig/vuln-runtime-scanner to v1.6.9 ([#1594](https://github.com/sysdiglabs/charts/issues/1594))
+# v1.22.3
+### Chores
+* **node-analyzer,kspm-collector** [f1023ae1](https://github.com/sysdiglabs/charts/commit/f1023ae129bf5c95b13686bf793130d8fdbc6e50): Bump KSPM to 1.39.1 & Node Analyzer to 1.37.1 ([#1582](https://github.com/sysdiglabs/charts/issues/1582))
+# v1.22.2
+### Chores
+* **node-analyzer** [8857425b](https://github.com/sysdiglabs/charts/commit/8857425ba0edef4849a8ddd77a99122af1ec3161): bump sysdig/vuln-runtime-scanner to v0.7.4 ([#1569](https://github.com/sysdiglabs/charts/issues/1569))
+# v1.22.1
+### Chores
+* **node-analyzer** [474f2619](https://github.com/sysdiglabs/charts/commit/474f26194a45b6b0b694cdf58627ad01abac95d2): bump sysdig/vuln-host-scanner to v0.7.2 to fix missing container scanning results when using Podman v3 ([#1550](https://github.com/sysdiglabs/charts/issues/1550))
+# v1.22.0
+### Chores
+* **node-analyzer,kspm-collector** [d80be00a](https://github.com/sysdiglabs/charts/commit/d80be00a821b0af2f71da6fd04590fcd897e0b4a): Bump KSPM to 1.39.0 & Node Analyzer to 1.37.0 ([#1549](https://github.com/sysdiglabs/charts/issues/1549))
+# v1.21.0
+### New Features
+* **node-analyzer** [1e512f9a](https://github.com/sysdiglabs/charts/commit/1e512f9af08674b87b01c17b9bc34c436e90ff8a): bumped host-scanner to 0.7.0 to add container scanning support ([#1538](https://github.com/sysdiglabs/charts/issues/1538))
+# v1.20.4
+### Chores
+* **node-analyzer** [14068b24](https://github.com/sysdiglabs/charts/commit/14068b24e61b1a95634794599e8e105721701686): bump sysdig/vuln-runtime-scanner to v1.6.7 ([#1545](https://github.com/sysdiglabs/charts/issues/1545))
+# v1.20.3
+### Bug Fixes
+* **nodeAnalyzer** [7019a941](https://github.com/sysdiglabs/charts/commit/7019a94176feca81f12b5458788bd62d5d8316a5): deamonset not being rollout after configuration changes ([#1533](https://github.com/sysdiglabs/charts/issues/1533))
+
+    * * Fix node-analyzer daemonset rollout not triggered by a change in configuration
+# v1.20.2
+### New Features
+* **node-analyzer** [809552f7](https://github.com/sysdiglabs/charts/commit/809552f71f8b17b9f57a72dd6b659e959eaa4fe4): namespace variable for runtime-scanner and eve-connector ([#1518](https://github.com/sysdiglabs/charts/issues/1518))
+# v1.20.1
+### Chores
+* **node-analyzer** [9895cb00](https://github.com/sysdiglabs/charts/commit/9895cb002e359c36e857ea3e9dd867f34129aeef): Improve template to reflect eveEnabled settings in CM ([#1536](https://github.com/sysdiglabs/charts/issues/1536))
+# v1.20.0
+### New Features
+* **node-analyzer** [c43ad629](https://github.com/sysdiglabs/charts/commit/c43ad6292b8538d65de2267cf0aba9d55067e7d4): In-USE (EVE) enabled by default ([#1501](https://github.com/sysdiglabs/charts/issues/1501))
+# v1.19.2
+### Chores
+* **sysdig, node-analyzer** [4a1a9a1d](https://github.com/sysdiglabs/charts/commit/4a1a9a1d7feaeb4ee04b2c17e4b84d8440cf6901): bump sysdig/vuln-runtime-scanner to v1.6.6 ([#1526](https://github.com/sysdiglabs/charts/issues/1526))
+# v1.19.1
+### Chores
+* **admission-controller,cloud-connector,cluster-scanner,node-analyzer,registry-scanner,sysdig-deploy** [9d5d8c58](https://github.com/sysdiglabs/charts/commit/9d5d8c5809d35bcb5e8060ccc454f446cb1e3bc7): change charts ownership ([#1461](https://github.com/sysdiglabs/charts/issues/1461))
+# v1.19.0
+### Chores
+* **node-analyzer,kspm-collector** [045b5d37](https://github.com/sysdiglabs/charts/commit/045b5d3798eb60ac6bff33f168273dca8a49618b): Bump KSPM to 1.38.0 & Node Analyzer to 1.36.0 ([#1513](https://github.com/sysdiglabs/charts/issues/1513))
 # v1.18.9
 ### Chores
 * **node-analyzer** [be507e09](https://github.com/sysdiglabs/charts/commit/be507e09e99ea79486a8d881a611d239de126f30): bump KSPM to v1.37.0 ([#1510](https://github.com/sysdiglabs/charts/issues/1510))

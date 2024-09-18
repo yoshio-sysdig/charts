@@ -1,0 +1,8 @@
+---
+cluster_shield:
+  cluster_config:
+    name: "lint-cluster"
+  sysdig_endpoint:
+    access_key: "XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
+    api_url: "https://www.example.org"
+    collector: "example.com:6443"

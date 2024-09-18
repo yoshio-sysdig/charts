@@ -1,5 +1,5 @@
 # What's Changed
 
 ### New Features
-- **sysdig** [048837fc](https://github.com/sysdiglabs/charts/commit/048837fcb04b48c5dc584d13f5a005fdb75fd230): Update legacy engine NIA component with security updates ([#1489](https://github.com/sysdiglabs/charts/issues/1489))
-#### Full diff: https://github.com/sysdiglabs/charts/compare/sysdig-deploy-1.29.12...sysdig-1.16.23
+- **sysdig,hostAnalyzer** [a8e1124b](https://github.com/sysdiglabs/charts/commit/a8e1124bfb668e9f9d04095c26d6ada0235cda04): Update legacy engine HostAnalyzer to v0.1.19 components with security updates ([#1601](https://github.com/sysdiglabs/charts/issues/1601))
+#### Full diff: https://github.com/sysdiglabs/charts/compare/sysdig-deploy-1.37.15...sysdig-1.16.25

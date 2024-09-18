@@ -1,0 +1,324 @@
+suite: Test ConfigMap
+templates:
+  - templates/configmap.yaml
+values:
+  - ../ci/base-values.yaml
+tests:
+
+  - it: Check configmap does not contain leading/trailing whitespaces
+    asserts:
+      - hasDocuments:
+          count: 1
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - isNotEmpty:
+          path: data
+      - notMatchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: ^\n
+      - notMatchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: \n\n$
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: \n$
+
+  - it: Sets the correct log level in configmap
+    set:
+      cluster_shield:
+        log_level: info
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: "log_level: info"
+
+  - it: Cluster Scanner default configuration
+    set:
+      cluster_shield:
+        log_level: info
+        features:
+          container_vulnerability_management:
+            enabled: true
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            cluster_scanner:
+              image_sbom_extractor:
+                nats_url: nats://release-name-cluster-shield-cluster-scanner:4222
+              leader_election_lock_name: release-name-cluster-shield
+
+  - it: Cluster Scanner configuration with additional values
+    set:
+      cluster_shield:
+        log_level: info
+        features:
+          container_vulnerability_management:
+            enabled: true
+        cluster_scanner:
+          image_sbom_extractor:
+            cache:
+              types:
+                - distributed
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            cluster_scanner:
+              image_sbom_extractor:
+                cache:
+                  types:
+                  - distributed
+                nats_url: nats://release-name-cluster-shield-cluster-scanner:4222
+              leader_election_lock_name: release-name-cluster-shield
+
+  - it: Set SSL Verify (global flag - disabled)
+    set:
+      global:
+        sslVerifyCertificate: false
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            ssl:
+              verify: false
+
+  - it: Set SSL Verify (global flag - enabled)
+    set:
+      global:
+        sslVerifyCertificate: true
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            ssl:
+              verify: true
+
+  - it: Set SSL Verify (local flag - disabled)
+    set:
+      global:
+        sslVerifyCertificate: true
+      cluster_shield:
+        ssl:
+          verify: false
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            ssl:
+              verify: false
+
+  - it: Set SSL Verify (local flag - enabled)
+    set:
+      global:
+        sslVerifyCertificate: false
+      cluster_shield:
+        ssl:
+          verify: true
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            ssl:
+              verify: true
+
+  - it: Set SSL Verify (default)
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            ssl:
+              verify: true
+
+  - it: Local custom region requires Collector when kubernetes_metadata feature is enabled
+    set:
+      cluster_shield:
+        sysdig_endpoint:
+          region: "custom"
+          api_url: "https://www.example.com"
+          collector: null
+        features:
+          kubernetes_metadata:
+            enabled: true
+    asserts:
+      - failedTemplate:
+          errorMessage: Custom region requires cluster_shield.sysdig_endpoint.collector to be defined.
+
+  - it: Global custom region requires Collector when kubernetes_metadata feature is enabled
+    set:
+      global:
+        sysdig:
+          region: "custom"
+      cluster_shield:
+        sysdig_endpoint:
+          api_url: "https://www.example.com"
+          collector: null
+        features:
+          kubernetes_metadata:
+            enabled: true
+    asserts:
+      - failedTemplate:
+          errorMessage: Custom region requires cluster_shield.sysdig_endpoint.collector to be defined.
+
+
+  - it: Local custom region requires Collector when kubernetes_metadata feature is enabled
+    set:
+      cluster_shield:
+        sysdig_endpoint:
+          region: "custom"
+          api_url: "https://www.example.com"
+          collector: "collector.example.com:6443"
+        features:
+          kubernetes_metadata:
+            enabled: true
+    asserts:
+      - notFailedTemplate: {}
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |-
+            sysdig_endpoint:
+              api_url: https://www.example.com
+              collector: collector.example.com:6443
+              region: custom
+
+  - it: Global custom region requires Collector when kubernetes_metadata feature is enabled
+    set:
+      global:
+        sysdig:
+          region: "custom"
+      cluster_shield:
+        sysdig_endpoint:
+          api_url: "https://www.example.com"
+          collector: "collector.example.com:6443"
+        features:
+          kubernetes_metadata:
+            enabled: true
+    asserts:
+      - notFailedTemplate: {}
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |-
+            sysdig_endpoint:
+              api_url: https://www.example.com
+              collector: collector.example.com:6443
+              region: custom
+
+  - it: Default TLS configuration
+    set:
+      cluster_shield:
+        features:
+          admission_control:
+            enabled: true
+          audit:
+            enabled: true
+          container_vulnerability_management:
+            enabled: true
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - isNotEmpty:
+          path: data["cluster-shield.yaml"]
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            kubernetes:
+              ca_cert_file: /cert/ca.crt
+              running_namespace: NAMESPACE
+              tls_cert_file: /cert/tls.crt
+              tls_private_key_file: /cert/tls.key
+
+  - it: Custom TLS filenames
+    set:
+      existingTLSSecret:
+        name: my-tls-secret
+        tlsCertName: custom_tls.crt
+        tlsCertKeyName: custom_tls.key
+        caCertName: custom_ca.crt
+      cluster_shield:
+        features:
+          admission_control:
+            enabled: true
+          audit:
+            enabled: true
+          container_vulnerability_management:
+            enabled: true
+    asserts:
+      - containsDocument:
+          kind: ConfigMap
+          apiVersion: v1
+      - hasDocuments:
+          count: 1
+      - isNotEmpty:
+          path: data
+      - isNotEmpty:
+          path: data["cluster-shield.yaml"]
+      - matchRegex:
+          path: data['cluster-shield.yaml']
+          pattern: |
+            kubernetes:
+              ca_cert_file: /cert/custom_ca.crt
+              running_namespace: NAMESPACE
+              tls_cert_file: /cert/custom_tls.crt
+              tls_private_key_file: /cert/custom_tls.key

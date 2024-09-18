@@ -47,6 +47,7 @@ spec:
         {{- end }}
       {{- if .Values.webhook.hostNetwork }}
       hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
       {{- end }}
       containers:
       {{- if .Values.features.kspmAdmissionController}}
@@ -54,8 +55,8 @@ spec:
           image: {{ include "admissionController.kspm.image" . }}
           imagePullPolicy: {{ .Values.webhook.v2.image.pullPolicy | default .Values.global.image.pullPolicy }}
           env:
-            - name: DRY_RUN
-              value: "true"
+            - name: DEFAULT_TIMEOUT
+              value: {{ .Values.webhook.timeoutSeconds | quote }}
             {{- if (or (include "webhook.httpProxy" .) (include "webhook.httpsProxy" .) (include "webhook.noProxy" .) )}}
             - name: HTTP_PROXY
               value: {{ include "webhook.httpProxy" . }}

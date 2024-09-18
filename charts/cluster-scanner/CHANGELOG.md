@@ -10,6 +10,88 @@ Manual edits are supported only below '## Change Log' and should be used
 exclusively to fix incorrect entries and not to add new ones.
 
 ## Change Log
+# v0.14.2
+### Chores
+* **cluster-scanner** [58b07db7](https://github.com/sysdiglabs/charts/commit/58b07db717d86d676979717da0018e9479d5f929): Update cluster scanner to v0.9.3 ([#1880](https://github.com/sysdiglabs/charts/issues/1880))
+# v0.14.1
+### New Features
+* **common,admission-controller,agent,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [07abc204](https://github.com/sysdiglabs/charts/commit/07abc204fd61e4692b48cf36babf0eecae6d154b): Add support for the in1 region ([#1847](https://github.com/sysdiglabs/charts/issues/1847))
+# v0.14.0
+### Chores
+* **cluster-scanner** [c8c03956](https://github.com/sysdiglabs/charts/commit/c8c03956fe1d1fc5f999f627817acd711944806b): Release cluster-scanner 0.9.2 ([#1846](https://github.com/sysdiglabs/charts/issues/1846))
+# v0.13.7
+### Bug Fixes
+* **cluster-scanner** [395589fe](https://github.com/sysdiglabs/charts/commit/395589fed7878c91bc14eb83d6a469cf2dc56355): properly document onPremCompatibilityVersion ([#1844](https://github.com/sysdiglabs/charts/issues/1844))
+# v0.13.6
+### Chores
+* **cluster-scanner** [57976b93](https://github.com/sysdiglabs/charts/commit/57976b937c7eaf236f1021401e55003be95fc134): bump cluster-scanner to 0.8.4 ([#1802](https://github.com/sysdiglabs/charts/issues/1802))
+# v0.13.5
+### Chores
+* **agent,cluster-shield,sysdig-deploy,rapid-response,kspm-collector,cluster-scanner** [87059f19](https://github.com/sysdiglabs/charts/commit/87059f1992b6bf1c133ef96937ea2da90fa7d8a1): bump helm-unittest to v0.5.1 ([#1785](https://github.com/sysdiglabs/charts/issues/1785))
+# v0.13.4
+# v0.13.3
+### Chores
+* **cluster-scanner,sysdig-deploy** [48c98ef5](https://github.com/sysdiglabs/charts/commit/48c98ef5612f16572f9d8acd29e2d6527dec2523): bump cluster-scanner to 0.7.6 ([#1745](https://github.com/sysdiglabs/charts/issues/1745))
+# v0.13.2
+### Chores
+* **cluster-scanner,sysdig-deploy** [f956c444](https://github.com/sysdiglabs/charts/commit/f956c4444ca7c0036db79abe7b2ac20bddfbf74c): bump cluster-scanner to 0.7.5 ([#1733](https://github.com/sysdiglabs/charts/issues/1733))
+# v0.13.1
+### Chores
+* **cluster-scanner** [6c917450](https://github.com/sysdiglabs/charts/commit/6c9174500a67a8285caeac17f5fcf76441d8e6ad): bump cluster-scanner to 0.7.4 ([#1707](https://github.com/sysdiglabs/charts/issues/1707))
+# v0.13.0
+### New Features
+* **cluster-scanner** [ae116768](https://github.com/sysdiglabs/charts/commit/ae1167685b7fdab35accd9db4f9fc0f91e1015ef): removed support for multi-cluster ([#1700](https://github.com/sysdiglabs/charts/issues/1700))
+# v0.12.4
+### New Features
+* **cluster-scanner,sysdig-deploy** [8917a0af](https://github.com/sysdiglabs/charts/commit/8917a0af74d5a875bcec55b0f8269cddff75066c): add option to populate custom labels for cluster scanner ([#1691](https://github.com/sysdiglabs/charts/issues/1691))
+# v0.12.3
+### Chores
+* **cluster-scanner** [bced17d8](https://github.com/sysdiglabs/charts/commit/bced17d865e9a6aba53035a5e24d8549814d7135): enable EveIntegration by default ([#1692](https://github.com/sysdiglabs/charts/issues/1692))
+# v0.12.2
+### Chores
+* **cluster-scanner** [e93a0a14](https://github.com/sysdiglabs/charts/commit/e93a0a146b01066aecf5a9a7153daa831da45697): bump cluster-scanner to 0.7.2 ([#1689](https://github.com/sysdiglabs/charts/issues/1689))
+# v0.12.1
+### Chores
+* **cluster-scanner** [34d84a56](https://github.com/sysdiglabs/charts/commit/34d84a5663062bc8e1d7b801b3f910d8f5dcd0a1): bump cluster-scanner to 0.7.1 ([#1673](https://github.com/sysdiglabs/charts/issues/1673))
+# v0.12.0
+### Chores
+* **cluster-scanner** [8ec409ea](https://github.com/sysdiglabs/charts/commit/8ec409eaf8942f4be315c4e814ef25cc3fe68fa6): bump cluster-scanner to 0.7.0 ([#1663](https://github.com/sysdiglabs/charts/issues/1663))
+# v0.11.2
+### Chores
+* **cluster-scanner** [92b72301](https://github.com/sysdiglabs/charts/commit/92b72301b73083978b3819b1d64e1f2906c02a39): bump cluster-scanner to 0.6.6 ([#1656](https://github.com/sysdiglabs/charts/issues/1656))
+# v0.11.1
+### Chores
+* **cluster-scanner** [2c460107](https://github.com/sysdiglabs/charts/commit/2c460107f03194a5ce35ce5b16f2296b4312e35a): bump cluster-scanner to 0.6.4 ([#1632](https://github.com/sysdiglabs/charts/issues/1632))
+# v0.11.0
+### New Features
+* **cluster-scanner** [c4d7310c](https://github.com/sysdiglabs/charts/commit/c4d7310c61078513af7adc01030eca3405c43e99): added support for NATS JS TLS encryption ([#1630](https://github.com/sysdiglabs/charts/issues/1630))
+# v0.10.1
+### Chores
+* **cluster-scanner** [088c9948](https://github.com/sysdiglabs/charts/commit/088c99483dad59f16a90f10b2d5fe439c15ba02c): bump cluster-scanner to 0.6.1 ([#1622](https://github.com/sysdiglabs/charts/issues/1622))
+# v0.10.0
+### New Features
+* **cluster-scanner** [b551ed22](https://github.com/sysdiglabs/charts/commit/b551ed22df79ef9c52ff7deefe1e6d8e0de68d4d): added support for handling AC requests [SSPROD-35871] ([#1610](https://github.com/sysdiglabs/charts/issues/1610))
+# v0.9.1
+### Chores
+* **cluster-scanner** [0d74d403](https://github.com/sysdiglabs/charts/commit/0d74d403e672a38052c20b04dcd90a17051142f1): bump cluster-scanner to 0.5.9 ([#1613](https://github.com/sysdiglabs/charts/issues/1613))
+# v0.9.0
+### New Features
+* **common** [0061b52d](https://github.com/sysdiglabs/charts/commit/0061b52d51f43e1e4d5e2bdf1145be28287d5ce6): add me2 region support ([#1591](https://github.com/sysdiglabs/charts/issues/1591))
+# v0.8.9
+### New Features
+* **cluster-scanner,sysdig-deploy** [58160f4c](https://github.com/sysdiglabs/charts/commit/58160f4c4dd1e999a7b39b7ce8995b319e06205b): add logic to make it possible to disable platform services if needed. ([#1596](https://github.com/sysdiglabs/charts/issues/1596))
+# v0.8.8
+### New Features
+* **cluster-scanner** [d1c37ca8](https://github.com/sysdiglabs/charts/commit/d1c37ca8cc04c3b3f88f590a3bcf8c630ca480cb): bump cluster-scanner to 0.5.4 ([#1580](https://github.com/sysdiglabs/charts/issues/1580))
+# v0.8.7
+### New Features
+* **sysdig-deploy** [49fe006f](https://github.com/sysdiglabs/charts/commit/49fe006fb0ff206c7b566a45bfa5f71713d5ad0a): Add prerequisite information on the chart ([#1468](https://github.com/sysdiglabs/charts/issues/1468))
+# v0.8.6
+### Chores
+* **admission-controller,cloud-connector,cluster-scanner,node-analyzer,registry-scanner,sysdig-deploy** [9d5d8c58](https://github.com/sysdiglabs/charts/commit/9d5d8c5809d35bcb5e8060ccc454f446cb1e3bc7): change charts ownership ([#1461](https://github.com/sysdiglabs/charts/issues/1461))
+# v0.8.5
+### New Features
+* **cluster-scanner** [4d5254f0](https://github.com/sysdiglabs/charts/commit/4d5254f09559a7f8b1690c8c060428bb95727dc9): add verify registry as option in values ([#1516](https://github.com/sysdiglabs/charts/issues/1516))
 # v0.8.4
 ### Chores
 * **clusterScanner** [849d2cdd](https://github.com/sysdiglabs/charts/commit/849d2cddd9058b3a1e46f110ccbd0a815399219a): bump RSI and ISE version to 0.5.3 ([#1494](https://github.com/sysdiglabs/charts/issues/1494))

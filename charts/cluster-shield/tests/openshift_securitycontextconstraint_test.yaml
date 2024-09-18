@@ -1,0 +1,40 @@
+suite: Test Openshift SecurityContextConstraints
+templates:
+  - templates/openshift_securitycontextconstraint.yaml
+values:
+  - ../ci/base-values.yaml
+release:
+  name: shield-release
+  namespace: shield-namespace
+capabilities:
+  apiVersions:
+    - security.openshift.io/v1
+tests:
+  - it: Test run-all-namespaced mode
+    set:
+      run_command: "run-all-namespaced"
+    asserts:
+      - isKind:
+          of: SecurityContextConstraints
+      - contains:
+          path: users
+          content: "system:serviceaccount:shield-namespace:shield-release-cluster-shield"
+
+  - it: Test run-all-namespaced mode with custom service account name
+    set:
+      run_command: "run-all-namespaced"
+      serviceAccount:
+        name: "custom-service-account"
+    asserts:
+      - isKind:
+          of: SecurityContextConstraints
+      - contains:
+          path: users
+          content: "system:serviceaccount:shield-namespace:custom-service-account"
+
+  - it: Test run-all mode
+    set:
+      run_command: "run-all"
+    asserts:
+      - hasDocuments:
+          count: 0

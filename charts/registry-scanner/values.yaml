@@ -28,7 +28,7 @@ config:
   registryUser: ""
   # The password for registry authentication.
   registryPassword: ""
-  # Mandatory.<br/>The registry Type. Supported types: artifactory, ecr, icr, acr, quay, harbor, gar, gcr, nexus and dockerv2.
+  # Mandatory.<br/>The registry Type. Supported types: artifactory, ecr, icr, acr, quay, harbor, gar, gcr, nexus, ocp and dockerv2.
   registryType: ""
   # The account ID. Applicable only for ICR registry type.
   registryAccountId: ""
@@ -53,6 +53,12 @@ config:
     allowListRegions: []
   # Ignore registry TLS certificate errors (self-signed, etc.).
   registrySkipTLS: false
+  # Max number of retries to call the registtry APIs in case of failure or 409.
+  registryMaxRetries: 10
+  # Max wait time between retries.
+  registryMaxRetryWait: 10m
+  # Min wait time between retries.
+  registryMinRetryWait: 5s
   # **required**
   # <br/> The Sysdig Secure Base URL.
   secureBaseURL: https://secure.sysdig.com
@@ -105,6 +111,10 @@ config:
       # The size limit for the emptyDir volume used by the scanner job.<br/>
       # This volume is used to store both the vulnerability database and the image to scan.
       temporaryVolumeSizeLimit: 2Gi
+      # NodeSelector for child jobs. If only .Values.nodeSelector is specified, child jobs will inherit the same nodeSelector as the main pod
+      nodeSelector: {}
+    # Force the scan to happen on the client component rather than relying on backend scanning
+    disablePlatformScanning: false
   # Number of goroutines running in parallel in metadata phase for ECR Org setup.
   parallelGoRoutines: 100
 ssl:

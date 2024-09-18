@@ -139,6 +139,7 @@ nodeAnalyzer:
   noProxy:
   # NATS max reconnect attempts
   natsMaxReconnect: 0
+  natsMaxReconnectFailures: 60
 
   # Allow sysdig Node Image Analyzer to run on Kubernetes 1.6 masters
   tolerations:
@@ -152,6 +153,10 @@ nodeAnalyzer:
       value: "true"
     - effect: NoExecute
       key: node-role.kubernetes.io/etcd
+      operator: Equal
+      value: "true"
+    - effect: NoExecute
+      key: CriticalAddonsOnly
       operator: Equal
       value: "true"
 
@@ -184,7 +189,7 @@ nodeAnalyzer:
     deploy: true
     image:
       repository: sysdig/node-image-analyzer
-      tag: 0.1.30
+      tag: 0.1.35
       digest:
       pullPolicy:
 
@@ -242,7 +247,7 @@ nodeAnalyzer:
     deploy: true
     image:
       repository: sysdig/host-analyzer
-      tag: 0.1.18
+      tag: 0.1.22
       digest:
       pullPolicy:
 
@@ -278,7 +283,7 @@ nodeAnalyzer:
 
     image:
       repository: sysdig/compliance-benchmark-runner
-      tag: 1.1.0.9
+      tag: 1.1.1.4
       digest:
       pullPolicy:
 
@@ -308,7 +313,7 @@ nodeAnalyzer:
     probesPort: 7002
     image:
       repository: sysdig/vuln-runtime-scanner
-      tag: "1.6.4"
+      tag: "1.8.0"
       digest:
       pullPolicy:
 
@@ -334,10 +339,19 @@ nodeAnalyzer:
         memory: 2Gi
         ephemeral-storage: "4Gi"
 
+    readinessProbe:
+      probe:
+        initialDelaySeconds: 90
+        periodSeconds: 3
+    livenessProbe:
+      probe:
+        initialDelaySeconds: 90
+        periodSeconds: 3
+
     env: {}
 
     settings:
-      eveEnabled: false
+      eveEnabled: true
       # Threshold for which images will be skipped in the analysis.
       # Size is in bytes, default is not set (don't skip)
       # maxImageSizeAllowed: ""
@@ -351,7 +365,7 @@ nodeAnalyzer:
       deploy: false
       image:
         repository: sysdig/eveclient-api
-        tag: 1.1.2
+        tag: 1.1.4
         digest:
         pullPolicy:
 
@@ -392,7 +406,7 @@ nodeAnalyzer:
 
     image:
       repository: sysdig/vuln-host-scanner
-      tag: "0.6.8"
+      tag: "0.12.1"
       digest:
       pullPolicy:
 
@@ -400,6 +414,12 @@ nodeAnalyzer:
     httpProxy:
     httpsProxy:
     noProxy:
+
+    # Prometheus configuration
+    prometheus:
+      enabled: false
+      # endpoint: "/metrics"
+      # port: "25000"
 
     resources:
       requests:
@@ -411,16 +431,30 @@ nodeAnalyzer:
         memory: 150Mi
         ephemeral-storage: 250Mi
 
+    readinessProbe:
+      probe:
+        initialDelaySeconds: 90
+        periodSeconds: 3
+    livenessProbe:
+      probe:
+        initialDelaySeconds: 90
+        periodSeconds: 3
+
     env: {}
 
     settings:
       replicas: 1
 
+    scanContainers:
+      enabled: false
+      # dockerSocketPath: "unix:///var/run/docker.sock"
+      # podmanSocketPath: "unix:///var/run/podman.sock"
+
   kspmAnalyzer:
     debug: false
     image:
       repository: sysdig/kspm-analyzer
-      tag: 1.37.0
+      tag: 1.44.2
       digest:
       pullPolicy:
 
@@ -486,8 +520,22 @@ nodeAnalyzer:
       # Provide the filename that is defined inside the existing ConfigMap.  Required if existingCaConfigMap is set.
       existingCaConfigMapKeyName:
 
+      # If Bottlerocket is enabled then the apiclient and api socket will be mounted
+  bottlerocket:
+    enabled: false
+    # Path to host apiclient binary
+    apiClientPath: /usr/bin/apiclient
+    # Path to host api socket
+    apiServerSocketPath: /run/api.sock
+
 tests:
   timeout: 300s
   image:
     repo: bitnami/kubectl
-    tag: 1.24.4
+    tag: 1.31.1
+
+# Allow to modify DNS policy
+dnsPolicy: null
+
+# Allow to set host network
+hostNetwork: null

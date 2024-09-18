@@ -65,18 +65,14 @@ global:
       # Provide the filename that is defined inside the existing ConfigMap
       existingCaConfigMapKeyName:
 # Enables Sysdig Eve to retrieve the list of running packages.
-eveEnabled: false
+eveEnabled: true
 # Enables the integration with Sysdig Eve. Stores the list of running packages
 # to Sysdig backend. It implies `eveEnabled: true`.
-eveIntegrationEnabled: false
+eveIntegrationEnabled: true
 # The namespace to use to retrieve the cluster UID
 rootNamespace: "kube-system"
 
 replicaCount: 2
-
-# The scannerMode of the Cluster Scanner. Supported values are `local` or
-# `multi`. Please refer to docs.sysdig.com for further documentation.
-scannerMode: "local"
 
 # Optional parameter used to check the compatibility of cluster-scanner
 # component versions with the on-premised backend version.
@@ -89,13 +85,17 @@ scannerMode: "local"
 # E.g. if `onPremCompatibilityVersion=6.2`, we ensure that the image
 # tag is < 0.5.0 for both the Runtime Status Integrator and the Image SBOM
 # Extractor.
-# onPremCompatibilityVersion: "6.2"
+onPremCompatibilityVersion:
 
 # Can be set to false to allow insecure connections to the Sysdig backend,
 # such as for on-premise installs that use self-signed certificates.
 # By default, certificates are always verified.
 sslVerifyCertificate: true
 
+# Can be set to false to allow insecure connections registries,
+# Such as for registries with self-signed or private certificates.
+# By default, certificates are always verified.
+sslVerifyRegistryCertificate: true
 runtimeStatusIntegrator:
   image:
     # The image registry to use for the Runtime Status Integrator component of
@@ -104,22 +104,15 @@ runtimeStatusIntegrator:
     # The image repository to use for pulling the Runtime Status Integrator
     # image
     repository: sysdig/runtime-status-integrator
-    tag: "0.5.3"
+    tag: 0.9.3
   # Params to manage leader election
   # Leader election is implemented leveraging the native capabilities of
   # Kubernetes see: https://kubernetes.io/blog/2016/01/simple-leader-election-with-kubernetes/
   # leaderElectionLeaseNameOverride: ""
   # leaderElectionLeaseNamespaceOverride: ""
 
-  # When the Cluster Scanner is running in `multi` mode, set the secret name to
-  # be used to retrieve the kubeconfig configuration to connect to the clusters
-  # to inspect.
-  multiCluster:
-    # kubeconfigSecretName: ""
-
-  # Restrict access to specific Docker secrets when Cluster Scanner is running
-  # in `local` mode. The default behavior is listing all secrets. See
-  # `values.yaml` for an example. Optional.
+  # Restrict access to specific Docker secrets when Cluster Scanner is running.
+  # The default behavior is listing all secrets. See `values.yaml` for an example. Optional.
   localCluster:
     # rbac:
     #   allowedPullSecrets:
@@ -159,6 +152,25 @@ runtimeStatusIntegrator:
     # Default uses a random password for each installation.
     # password: ""
 
+    tls:
+      enabled: true
+      # Can be set to false to allow insecure connections to the NATS JetStream instance
+      verifyCertificate: true
+      # By default, a self-signed certificate is generated when tls is enabled, unless a custom certificate is provided.
+      # customCerts:
+      #   # Provide the name of an existing Secret that contains the Key required. Mandatory if customCerts is provided.
+      #   existingKeySecret:
+      #   # Provide the filename that is defined inside the existing Secret. [tls.key is the Default value]
+      #   existingKeySecretKeyName:
+      #   # Provide the name of an existing Secret that contains the Cert required. Mandatory if customCerts is provided.
+      #   existingCertSecret:
+      #   # Provide the filename that is defined inside the existing Secret. [tls.crt is the Default value]
+      #   existingCertSecretKeyName:
+      #   # Provide the name of an existing Secret that contains the CA required. Optional.
+      #   existingCaSecret:
+      #   # Provide the filename that is defined inside the existing Secret. Optional.
+      #   existingCaSecretKeyName:
+
 imageSbomExtractor:
   image:
     # The image registry to use for the Image SBOM Extractor component of
@@ -166,7 +178,7 @@ imageSbomExtractor:
     registry: quay.io
     # The image repository to use for pulling the Image SBOM Extractor image
     repository: sysdig/image-sbom-extractor
-    tag: "0.5.3"
+    tag: 0.9.3
   ports:
     # The port to be used to expose prometheus metrics for the Image SBOM
     # Extractor
@@ -318,3 +330,12 @@ ssl:
     existingCaConfigMap:
     # Provide the filename that is defined inside the existing ConfigMap
     existingCaConfigMapKeyName:
+
+# Option to make it possible to disable platform services
+disablePlatformScanning: false
+
+# Set Cluster Scanner pod labels
+podLabels: {}
+
+# Set Cluster Scanner labels
+labels: {}

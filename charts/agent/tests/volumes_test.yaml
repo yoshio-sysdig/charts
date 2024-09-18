@@ -1,6 +1,22 @@
 suite: Host volumes are available for agent
 templates:
-  - templates/daemonset.yaml
+  - daemonset.yaml
+  - deployment.yaml
+kubernetesProvider:
+  scheme:
+    "v1/Node":
+      gvr:
+        version: "v1"
+        resource: "nodes"
+      namespaced: false
+  objects:
+  - apiVersion: v1
+    kind: Node
+    metadata:
+      name: fakenode
+    status:
+      nodeInfo:
+        osImage: fake-os-image
 tests:
   - it: Ensure /var/run host volume is mounted as /host/var/run in container
     asserts:
@@ -10,6 +26,56 @@ tests:
       - equal:
           path: spec.template.spec.volumes[?(@.name == "varrun-vol")].hostPath.path
           value: /var/run
+    templates:
+      - daemonset.yaml
+
+  - it: Ensure /host/dev host volume is NOT mounted readonly by default
+    set:
+      sysdig:
+        accessKey: AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE
+      delegatedAgentDeployment:
+        enabled: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[*].volumeMounts[?(@.name == "dev-vol")].readOnly
+          value: false
+    templates:
+      - daemonset.yaml
+      - deployment.yaml
+
+  - it: Ensure /host/dev host volume is mounted readonly on epbf mode
+    set:
+      ebpf:
+        enabled: true
+      sysdig:
+        accessKey: AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE
+      delegatedAgentDeployment:
+        enabled: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[*].volumeMounts[?(@.name == "dev-vol")].readOnly
+          value: true
+    templates:
+      - daemonset.yaml
+      - deployment.yaml
+
+  - it: Ensure /var/data host volume is mounted as /host/var/data in container
+    set:
+      sysdig:
+        accessKey: AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE
+      delegatedAgentDeployment:
+        enabled: true
+    asserts:
+      - equal:
+          path: spec.template.spec.containers[*].volumeMounts[?(@.name == "vardata-vol")].mountPath
+          value: /host/var/data
+      - equal:
+          path: spec.template.spec.volumes[?(@.name == "vardata-vol")].hostPath.path
+          value: /var/data
+    templates:
+      - daemonset.yaml
+      - deployment.yaml
+
   - it: Ensure /var/lib host volume is mounted as /host/var/lib in container
     asserts:
       - equal:
@@ -18,6 +84,9 @@ tests:
       - equal:
           path: spec.template.spec.volumes[?(@.name == "varlib-vol")].hostPath.path
           value: /var/lib
+    templates:
+      - daemonset.yaml
+
   - it: Ensure /var/lib host volume is not mounted as /host/var/lib in container when running on gke.autopilot
     set:
       gke:
@@ -27,6 +96,9 @@ tests:
           path: spec.template.spec.containers[*].volumeMounts[?(@.name == "varlib-vol")]
       - isNull:
           path: spec.template.spec.volumes[?(@.name == "varlib-vol")]
+    templates:
+      - daemonset.yaml
+
   - it: Ensure /var/lib host volume is not mounted as /host/var/lib in container when running on global.gke.autopilot
     set:
       global:
@@ -37,3 +109,237 @@ tests:
           path: spec.template.spec.containers[*].volumeMounts[?(@.name == "varlib-vol")]
       - isNull:
           path: spec.template.spec.volumes[?(@.name == "varlib-vol")]
+    templates:
+      - daemonset.yaml
+
+  - it: Ensure agent http proxy volume is not mounted when http_proxy settings is not set
+    set:
+      sysdig:
+        accessKey: AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE
+      delegatedAgentDeployment:
+        enabled: true
+    asserts:
+      - isNull:
+          path: spec.template.spec.volumes[?(@.name == "sysdig-agent-http-proxy-secrets")]
+      - isNull:
+          path: spec.template.spec.containers[*].volumeMounts[?(@.name == "sysdig-agent-http-proxy-secrets")]
+    templates:
+      - deployment.yaml
+      - daemonset.yaml
+
+  - it: Ensure agent http proxy volume is not mounted when http_proxy settings is set and autopilot is enabled
+    set:
+      sysdig:
+        accessKey: AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE
+        settings:
+          http_proxy:
+            proxy_user: username
+            proxy_password: password
+      delegatedAgentDeployment:
+        enabled: true
+      gke:
+        autopilot: true
+    asserts:
+      - isNull:
+          path: spec.template.spec.volumes[?(@.name == "sysdig-agent-http-proxy-secrets")]
+      - isNull:
+          path: spec.template.spec.containers[*].volumeMounts[?(@.name == "sysdig-agent-http-proxy-secrets")]
+    templates:
+      - deployment.yaml
+      - daemonset.yaml
+
+  - it: Ensure agent http proxy volume is mounted when http_proxy settings is set
+    set:
+      delegatedAgentDeployment:
+        enabled: true
+      sysdig:
+        accessKey: AAAAAAAA-BBBB-CCCC-DDDD-EEEEEEEEEEEE
+        settings:
+          http_proxy:
+            proxy_user: username
+            proxy_password: password
+    asserts:
+      - equal:
+          path: spec.template.spec.volumes[?(@.name == "sysdig-agent-http-proxy-secrets")].secret
+          value:
+            secretName: RELEASE-NAME-agent-proxy
+      - equal:
+          path: spec.template.spec.containers[*].volumeMounts[?(@.name == "sysdig-agent-http-proxy-secrets")].mountPath
+          value: /opt/draios/etc/secrets/http_proxy
+    templates:
+      - deployment.yaml
+      - daemonset.yaml
+
+  - it: Check for os-release mounts in slim=false, autopilot=false
+    set:
+      slim:
+        enabled: false
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: etc-vol
+            hostPath:
+              path: /etc
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: usr-vol
+            hostPath:
+              path: /usr
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+              mountPath: /host/etc
+              name: etc-vol
+              readOnly: true
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+            mountPath: /host/usr
+            name: usr-vol
+            readOnly: true
+    template: daemonset.yaml
+
+  - it: Check for os-release mounts in slim=true, autopilot=false
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: etc-vol
+            hostPath:
+              path: /etc
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: usr-vol
+            hostPath:
+              path: /usr
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+            mountPath: /host/etc
+            name: etc-vol
+            readOnly: true
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+            mountPath: /host/usr
+            name: usr-vol
+            readOnly: true
+    template: daemonset.yaml
+
+  - it: Check for os-release mounts in slim=false, autopilot=true
+    set:
+      slim:
+        enabled: false
+      gke:
+        autopilot: true
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: osrel
+            hostPath:
+              path: /etc/os-release
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: usr-vol
+            hostPath:
+              path: /usr
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+            mountPath: /host/etc/os-release
+            name: osrel
+            readOnly: true
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+            mountPath: /host/usr
+            name: usr-vol
+            readOnly: true
+    template: daemonset.yaml
+
+  - it: Check for os-release mounts in slim=true, autopilot=true
+    set:
+      gke:
+        autopilot: true
+    asserts:
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: osrel
+            hostPath:
+              path: /etc/os-release
+      - contains:
+          path: spec.template.spec.volumes
+          content:
+            name: usr-vol
+            hostPath:
+              path: /usr
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+            mountPath: /host/etc/os-release
+            name: osrel
+            readOnly: true
+      - contains:
+          path: spec.template.spec.containers[?(@.name == "sysdig")].volumeMounts
+          content:
+            mountPath: /host/usr
+            name: usr-vol
+            readOnly: true
+    template: daemonset.yaml
+
+  - it: Check kmodule extra volumes/mounts
+    set:
+      daemonset:
+        kmodule:
+          extraVolumes:
+            mounts:
+              - mountPath: /host/usr/lib64
+                name: lib64-vol
+              - mountPath: /host/custom
+                name: custom-vol
+            volumes:
+              - name: lib64-vol
+                hostPath:
+                  path: /lib64
+              - name: custom-vol
+                hostPath:
+                  path: /mnt/custom
+    asserts:
+      - equal:
+          path: spec.template.spec.initContainers[*].volumeMounts[?(@.name == "lib64-vol")].mountPath
+          value: /host/usr/lib64
+      - equal:
+          path: spec.template.spec.volumes[?(@.name == "lib64-vol")].hostPath
+          value:
+            path: /lib64
+      - equal:
+          path: spec.template.spec.initContainers[*].volumeMounts[?(@.name == "custom-vol")].mountPath
+          value: /host/custom
+      - equal:
+          path: spec.template.spec.volumes[?(@.name == "custom-vol")].hostPath
+          value:
+            path: /mnt/custom
+    templates:
+      - templates/daemonset.yaml
+
+  - it: Check kmodule don't have extra volumes/mounts when we set the extraVolumes
+    set:
+      extraVolumes:
+        mounts:
+          - mountPath: /host/custom
+            name: custom-vol
+        volumes:
+          - name: custom-vol
+            hostPath:
+              path: /mnt/custom
+    asserts:
+      - isNull:
+          path: spec.template.spec.initContainers[*].volumeMounts[?(@.name == "custom-vol")]
+    templates:
+      - templates/daemonset.yaml

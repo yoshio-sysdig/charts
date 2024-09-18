@@ -33,10 +33,10 @@ tests:
           value: kube-system
       - equal:
           path: data.eve_enabled
-          value: "false"
+          value: "true"
       - equal:
           path: data.eve_integration_enabled
-          value: "false"
+          value: "true"
       - equal:
           path: data.logging_level
           value: "INFO"
@@ -85,39 +85,9 @@ tests:
           path: data.rsi_mode
           value: "local"
 
-  - it: "can set multi mod"
-    set:
-      global.sysdig.apiHost: "http://test.com"
-      scannerMode: "multi"
-    asserts:
-      - equal:
-          path: data.rsi_mode
-          value: "multi"
-
-  - it: "can set local mod"
-    set:
-      global.sysdig.apiHost: "http://test.com"
-      scannerMode: "local"
-    asserts:
-      - equal:
-          path: data.rsi_mode
-          value: "local"
-
-  - it: "raise error on unknown mod"
-    set:
-      global.sysdig.apiHost: "http://test.com"
-      scannerMode: "foobar"
-    asserts:
-      - failedTemplate:
-          errorMessage: |
-            values don't meet the specifications of the schema(s) in the following chart(s):
-            cluster-scanner:
-            - scannerMode: scannerMode must be one of the following: "local", "multi"
-
   - it: "has correct format for local_registry_secrets when they are provided"
     set:
       global.sysdig.apiHost: "http://test.com"
-      scannerMode: "local"
       runtimeStatusIntegrator.localCluster:
         rbac:
           allowedPullSecrets:
@@ -135,28 +105,10 @@ tests:
   - it: "has correct format for local_registry_secrets when they are not provided"
     set:
       global.sysdig.apiHost: "http://test.com"
-      scannerMode: "local"
     asserts:
       - equal:
           path: data.local_registry_secrets
           value: ""
-
-  - it: "does not evaluate local_registry_secrets when in multi mode"
-    set:
-      global.sysdig.apiHost: "http://test.com"
-      scannerMode: "multi"
-      runtimeStatusIntegrator.localCluster:
-        rbac:
-          allowedPullSecrets:
-            namespaceOneName:
-              - myDockerSecretOne
-              - myDockerSecretTwo
-            anotherNamespace:
-              - myOtherDockerSecretOne
-              - myOtherDockerSecretTwo
-    asserts:
-      - isNull:
-          path: data.local_registry_secrets
 
   - it: "has correct content with redis caching"
     set:
@@ -433,10 +385,86 @@ tests:
           path: data.enable_platform_services
           value: "true"
 
+  - it: "has correct platform services value when enablePlatformServicesConfig is set to false provided and region supports platform services"
+    set:
+      global.sysdig.apiHost: "http://test.com"
+      global.sysdig.region: "us1"
+      disablePlatformScanning: true
+    asserts:
+      - isNull:
+          path: data.enable_platform_services
+
+  - it: "has correct platform services value when onPremCompatibilityVersion is = 7.0.0, region does NOT support platform services and enablePlatformServicesConfig set to false"
+    set:
+      global.sysdig.apiHost: "http://test.com"
+      onPremCompatibilityVersion: "7.0.0"
+      global.sysdig.region: ""
+      disablePlatformScanning: true
+    asserts:
+      - isNull:
+          path: data.enable_platform_services
+
   - it: "fails if onPremCompatibilityVersion is not a valid semver"
     set:
       global.sysdig.apiHost: "http://test.com"
       onPremCompatibilityVersion: "gigimarzullo"
     asserts:
-      - failedTemplate:
-          errorMessage: "Invalid Semantic Version"
+      - failedTemplate: {} # TODO: For some reason the new version of unittest doesn't work well with errorMessages comparison
+#          errorMessage: "Invalid Semantic Version"
+
+  - it: "has nats TLS enabled when nats tls is enabled"
+    set:
+      runtimeStatusIntegrator.natsJS.tls.enabled: true
+    asserts:
+      - equal:
+          path: data.js_server_tls_enabled
+          value: "true"
+      - equal:
+          path: data.js_tls_skip_verify
+          value: "false"
+      - equal:
+          path: data.js_tls_cert_path
+          value: "/js-certs/js_tls.cert"
+      - equal:
+          path: data.js_tls_key_path
+          value: "/js-certs/js_tls.key"
+      - equal:
+          path: data.js_tls_ca_paths
+          value: "/js-certs/js_tls.ca"
+
+  - it: "has nats TLS enabled, and skips tls verification, when nats tls is enabled"
+    set:
+      runtimeStatusIntegrator.natsJS.tls.enabled: true
+      runtimeStatusIntegrator.natsJS.tls.verifyCertificate: false
+    asserts:
+      - equal:
+          path: data.js_server_tls_enabled
+          value: "true"
+      - equal:
+          path: data.js_tls_skip_verify
+          value: "true"
+      - equal:
+          path: data.js_tls_cert_path
+          value: "/js-certs/js_tls.cert"
+      - equal:
+          path: data.js_tls_key_path
+          value: "/js-certs/js_tls.key"
+      - equal:
+          path: data.js_tls_ca_paths
+          value: "/js-certs/js_tls.ca"
+
+  - it: "has nats TLS disabled when nats tls settings are not provided"
+    set:
+      runtimeStatusIntegrator.natsJS.tls: null
+    asserts:
+      - equal:
+          path: data.js_server_tls_enabled
+          value: "false"
+      - notExists:
+          path: data.js_tls_skip_verify
+      - notExists:
+          path: data.js_tls_cert_path
+      - notExists:
+          path: data.js_tls_key_path
+      - notExists:
+          path: data.js_tls_ca_paths

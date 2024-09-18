@@ -4,7 +4,7 @@ metadata:
   name: {{ include "cluster-scanner.fullname" . }}
   namespace: {{ include "cluster-scanner.namespace" . }}
   labels:
-   {{- include "cluster-scanner.labels" . | nindent 4 }}
+    {{- include "cluster-scanner.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
@@ -25,7 +25,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "cluster-scanner.selectorLabels" . | nindent 8 }}
+        {{- include "cluster-scanner.labels" . | nindent 8 }}
+        {{- with .Values.podLabels }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.global.image.pullSecrets }}
       imagePullSecrets:
@@ -53,6 +56,39 @@ spec:
           configMap:
             name: {{ include "cluster-scanner.fullname" . }}-registry-mirrors
         {{- end }}
+        {{- if ( include "cluster-scanner.nats.tls.hasSelfSignedCert" . ) }}
+        - name: js-certs
+          secret:
+            secretName: {{ include "cluster-scanner.fullname" . }}
+            items:
+              - key: js_tls_key
+                path: js_tls.key
+              - key: js_tls_cert
+                path: js_tls.cert
+              - key: js_tls_ca
+                path: js_tls.ca
+        {{- else if ( include "cluster-scanner.nats.tls.hasCustomCert" . ) }}
+        - name: js-certs
+          projected:
+            sources:
+              - secret:
+                  name: {{ .Values.runtimeStatusIntegrator.natsJS.tls.customCerts.existingKeySecret }}
+                  items:
+                    - key: {{ .Values.runtimeStatusIntegrator.natsJS.tls.customCerts.existingKeySecretKeyName | default "tls.key" | quote }}
+                      path: js_tls.key
+              - secret:
+                  name: {{ .Values.runtimeStatusIntegrator.natsJS.tls.customCerts.existingCertSecret }}
+                  items:
+                      - key: {{ .Values.runtimeStatusIntegrator.natsJS.tls.customCerts.existingCertSecretKeyName | default "tls.crt" | quote }}
+                        path: js_tls.cert
+              {{- if ( include "cluster-scanner.nats.tls.hasCustomCASecret" . ) }}
+              - secret:
+                  name: {{ .Values.runtimeStatusIntegrator.natsJS.tls.customCerts.existingCaSecret }}
+                  items:
+                    - key: {{ .Values.runtimeStatusIntegrator.natsJS.tls.customCerts.existingCaSecretKeyName }}
+                      path: js_tls.ca
+              {{- end }}
+        {{- end }}
       containers:
         - name: rsi
           securityContext:
@@ -63,6 +99,11 @@ spec:
             {{- if eq (include "sysdig.custom_ca.enabled"  (dict "global" .Values.global.ssl "component" .Values.ssl)) "true" }}
             - name: ca-cert
               mountPath: /ca-certs
+              readOnly: true
+            {{- end }}
+            {{- if ((.Values.runtimeStatusIntegrator.natsJS).tls).enabled }}
+            - name: js-certs
+              mountPath: /js-certs
               readOnly: true
             {{- end }}
       {{- with .Values.runtimeStatusIntegrator }}
@@ -128,13 +169,6 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: status.podIP
-          {{- if  eq .Values.scannerMode "multi" }}
-          - name: SYSDIG_KUBECONFIG_CONTENT
-            valueFrom:
-              secretKeyRef:
-                name: {{ .Values.runtimeStatusIntegrator.multiCluster.kubeconfigSecretName }}
-                key: .kubeconfig
-          {{- end }}
           - name: SYSDIG_API_URL
             valueFrom:
               configMapKeyRef:
@@ -170,14 +204,12 @@ spec:
                 name: {{ include "cluster-scanner.fullname" . }}
                 key: rsi_pprof_enabled
                 optional: true
-          {{- if  eq .Values.scannerMode "local" }}
           - name: LOCAL_REGISTRY_SECRETS
             valueFrom:
               configMapKeyRef:
                 name: {{ include "cluster-scanner.fullname" . }}
                 key: local_registry_secrets
                 optional: true
-          {{- end }}
           - name: EVE_ENABLED
             valueFrom:
               configMapKeyRef:
@@ -189,6 +221,38 @@ spec:
               configMapKeyRef:
                 name: {{ include "cluster-scanner.fullname" . }}
                 key: eve_integration_enabled
+                optional: true
+          - name: NATS_JS_TLS_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_server_tls_enabled
+                optional: true
+          - name: NATS_JS_TLS_CERT_PATH
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_tls_cert_path
+                optional: true
+          - name: NATS_JS_TLS_KEY_PATH
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_tls_key_path
+                optional: true
+          {{- if or ( include "cluster-scanner.nats.tls.hasSelfSignedCert" . ) ( include "cluster-scanner.nats.tls.hasCustomCASecret" . ) }}
+          - name: NATS_JS_TLS_CA_PATHS
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_tls_ca_paths
+                optional: true
+          {{- end }}
+          - name: NATS_JS_TLS_SKIP_VERIFY
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_tls_skip_verify
                 optional: true
           - name: NATS_JS_CLIENT_NAME
             valueFrom:
@@ -255,6 +319,11 @@ spec:
               configMapKeyRef:
                 name: {{ include "cluster-scanner.fullname" . }}
                 key: rsi_js_producer_subject_prefix
+          - name: NATS_JS_PRIORITY_PRODUCER_SUBJECT_PREFIX
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: rsi_js_priority_producer_subject_prefix
           - name: NATS_JS_SERVER_USERNAME
             valueFrom:
               configMapKeyRef:
@@ -326,6 +395,11 @@ spec:
               subPath: daemon.json
               readOnly: true
             {{- end }}
+            {{- if ((.Values.runtimeStatusIntegrator.natsJS).tls).enabled }}
+            - name: js-certs
+              mountPath: /js-certs
+              readOnly: true
+            {{- end }}
       {{- with .Values.imageSbomExtractor }}
           ports:
             - name: metrics
@@ -394,6 +468,12 @@ spec:
                 name: {{ include "cluster-scanner.fullname" . }}
                 key: sysdig_verify_certificate
                 optional: true
+          - name: REGISTRY_VERIFY_CERTIFICATE
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: sysdig_verify_registry_certificate
+                optional: true
           - name: NATS_URL
             valueFrom:
               configMapKeyRef:
@@ -412,6 +492,26 @@ spec:
                 name: {{ include "cluster-scanner.fullname" . }}
                 key: js_server_password
                 optional: true
+          - name: NATS_TLS_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_server_tls_enabled
+                optional: true
+          - name: NATS_TLS_SKIP
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_tls_skip_verify
+                optional: true
+          {{- if or ( include "cluster-scanner.nats.tls.hasSelfSignedCert" . ) ( include "cluster-scanner.nats.tls.hasCustomCASecret" . ) }}
+          - name: NATS_TLS_CA
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: js_tls_ca_paths
+                optional: true
+          {{- end }}
           - name: NATS_CLIENT_NAME
             valueFrom:
               fieldRef:
@@ -468,6 +568,68 @@ spec:
               configMapKeyRef:
                 name: {{ include "cluster-scanner.fullname" . }}
                 key: ise_js_consumer_deliver_policy_all
+          - name: HIGH_PRIORITY_CONSUMER_ENABLED
+            value: "true"
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_STREAMNAME
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_streamname
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_name
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_DURABLE
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_durable
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_PULL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_pull
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_PULL_BATCH
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_pull_batch
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_SUBJECT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_subject
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_MAX_IN_FLIGHT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_max_in_flight
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_ACK_WAIT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_ack_wait
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_MAX_DELIVER
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_max_deliver
+                optional: true
+          - name: HIGH_PRIORITY_NATS_JS_CONSUMER_DELIVER_POLICY_ALL
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "cluster-scanner.fullname" . }}
+                key: ise_js_priority_consumer_deliver_policy_all
+                optional: true
           - name: NATS_JS_PRODUCER_SUBJECT
             valueFrom:
               configMapKeyRef:

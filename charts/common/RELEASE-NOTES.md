@@ -1,5 +1,5 @@
 # What's Changed
 
-### Bug Fixes
-- **common,agent,admission-controller,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [e76f1c17](https://github.com/sysdiglabs/charts/commit/e76f1c17e48491dd8ea21293ec1fed2619eed204): Update Sysdig CA ([#1393](https://github.com/sysdiglabs/charts/issues/1393))
-#### Full diff: https://github.com/sysdiglabs/charts/compare/common-1.2.1...common-1.2.2
+### New Features
+- **common,admission-controller,agent,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [07abc204](https://github.com/sysdiglabs/charts/commit/07abc204fd61e4692b48cf36babf0eecae6d154b): Add support for the in1 region ([#1847](https://github.com/sysdiglabs/charts/issues/1847))
+#### Full diff: https://github.com/sysdiglabs/charts/compare/common-1.3.0...common-1.3.1

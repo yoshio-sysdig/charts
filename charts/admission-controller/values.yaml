@@ -168,8 +168,6 @@ podMonitors:
 
 webhook:
   v2:
-    # Number of seconds for the request to time out
-    timeoutSeconds: 5
     nats:
       # Allow insecure TLS certificates in backend connection to NATS service
       insecure: false
@@ -190,13 +188,22 @@ webhook:
       # The KSPM Admission Controller image repository
       repository: sysdig/secure-admission-controller
       # The KSPM Admission Controller image tag
-      tag: 1.0.1
+      tag: 1.27.4
       # Specifies the image digest value.  If set, this value is used instead of the tag value
       digest:
       # The PullPolicy for KSPM Admission Controller image
       pullPolicy:
   # The service name for Webhook deployment
   name: webhook
+
+  # Vulnerability Management extension settings
+  vm:
+    enabled: false
+    # NOTE: If you're installing ClusterScanner via ClusterShield
+    # the clusterScannerEndpoint will be in the form `${cluster-shield-installation-fullname}-cluster-scanner:9999`
+    # Port is always 9999
+    # clusterScannerEndpoint: "CHANGEME:9999"
+
   # The number of replicas for webhook. **Deprecated**, use `webhook.autoscaling.minReplicas` and `webhook.autoscaling.maxReplicas` instead.
   replicaCount: 1
 
@@ -363,7 +370,7 @@ scanner:
     # The PullPolicy for Scanner image.
     pullPolicy:
     # The Scanner image tag.
-    tag: 0.0.13
+    tag: 0.0.16
     # Specify the image digest value.  If set, this value is used instead of the tag value.
     digest:
 

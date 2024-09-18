@@ -1,5 +1,5 @@
 # What's Changed
 
 ### Chores
-- **rapid-response** [50a90678](https://github.com/sysdiglabs/charts/commit/50a9067882a4b441188cd4f8149528a892a29455): bump rapid-response version to 0.4.0 ([#1476](https://github.com/sysdiglabs/charts/issues/1476))
-#### Full diff: https://github.com/sysdiglabs/charts/compare/rapid-response-0.8.3...rapid-response-0.8.4
+- **ci** [fc5ecbaa](https://github.com/sysdiglabs/charts/commit/fc5ecbaaee10ec74f09a77a40be626f34e7dd292): bump bitnami/kubectl image references ([#1946](https://github.com/sysdiglabs/charts/issues/1946))
+#### Full diff: https://github.com/sysdiglabs/charts/compare/rapid-response-0.9.10...rapid-response-0.9.11

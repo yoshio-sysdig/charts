@@ -7,6 +7,14 @@
                                    "monitorApiEndpoint" "eu1.app.sysdig.com"
                                    "secureApiEndpoint"  "eu1.app.sysdig.com"
                                    "secureUi"           "eu1.app.sysdig.com/secure")
+                       "in1" (dict "collectorEndpoint"  "ingest.in1.sysdig.com"
+                                   "monitorApiEndpoint" "app.in1.sysdig.com"
+                                   "secureApiEndpoint"  "app.in1.sysdig.com"
+                                   "secureUi"           "app.in1.sysdig.com/secure")
+                       "me2" (dict "collectorEndpoint"  "ingest.me2.sysdig.com"
+                                   "monitorApiEndpoint" "app.me2.sysdig.com"
+                                   "secureApiEndpoint"  "app.me2.sysdig.com"
+                                   "secureUi"           "app.me2.sysdig.com/secure")
                        "us1" (dict "collectorEndpoint"  "collector.sysdigcloud.com"
                                    "monitorApiEndpoint" "app.sysdigcloud.com"
                                    "secureApiEndpoint"  "secure.sysdig.com"

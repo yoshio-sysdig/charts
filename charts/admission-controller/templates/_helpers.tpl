@@ -395,6 +395,9 @@ webhooks:
     apiVersions: ["v1"]
     operations: ["CREATE", "UPDATE"]
     resources:
+{{- if (.Values.webhook.vm).enabled }}
+    - "pods"
+{{- end }}
     - "deployments"
     - "replicasets"
     - "statefulsets"
@@ -412,8 +415,12 @@ webhooks:
 
   admissionReviewVersions: ["v1", "v1beta1"]
   sideEffects: None
-  timeoutSeconds: {{ .Values.webhook.v2.timeoutSeconds }}
+  timeoutSeconds: {{ .Values.webhook.timeoutSeconds }}
+  {{- if .Values.webhook.denyOnError }}
+  failurePolicy: Fail
+  {{- else }}
   failurePolicy: Ignore
+  {{- end }}
 {{- end }}
 {{- if or .Values.scanner.enabled .Values.webhook.acConfig }}
 - name: scanning.secure.sysdig.com
@@ -476,3 +483,11 @@ webhooks:
   failurePolicy: Ignore
 {{- end }}
 {{- end }}
+
+{{- define "admissionController.webhook.vmClusterScannerEndpoint" -}}
+{{- if not (and (.Values.webhook.vm).enabled (.Values.webhook.vm).clusterScannerEndpoint) -}}
+{{- required "A valid Sysdig API endpoint (.webhook.vm.clusterScannerEndpoint) is required" (.Values.webhook.vm).clusterScannerEndpoint -}}
+{{- else }}
+{{- (.Values.webhook.vm).clusterScannerEndpoint -}}
+{{- end -}}
+{{- end -}}

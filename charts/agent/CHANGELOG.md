@@ -10,6 +10,185 @@ Manual edits are supported only below '## Change Log' and should be used
 exclusively to fix incorrect entries and not to add new ones.
 
 ## Change Log
+# v1.29.4
+### Chores
+* **ci** [fc5ecbaa](https://github.com/sysdiglabs/charts/commit/fc5ecbaaee10ec74f09a77a40be626f34e7dd292): bump bitnami/kubectl image references ([#1946](https://github.com/sysdiglabs/charts/issues/1946))
+# v1.29.3
+### New Features
+* **agent** [2cd73379](https://github.com/sysdiglabs/charts/commit/2cd73379b9e38767fbae20169b1cf7299d13fc4f): create a clusterrolebinding if the clusterrole cluster-monitoring-view exists [SMAGENT-8031] ([#1938](https://github.com/sysdiglabs/charts/issues/1938))
+# v1.29.2
+### Chores
+* **ci** [e222f21d](https://github.com/sysdiglabs/charts/commit/e222f21de483926259c9574e4c2d9679681b9ddb): bump bitnami/kubectl image references ([#1892](https://github.com/sysdiglabs/charts/issues/1892))
+# v1.29.1
+### Bug Fixes
+* **agent** [16f961e7](https://github.com/sysdiglabs/charts/commit/16f961e75638e964eabcb3aed97893e961d1213b): Reorder volume list  (replace [#1899](https://github.com/sysdiglabs/charts/issues/1899)) ([#1917](https://github.com/sysdiglabs/charts/issues/1917))
+# v1.29.0
+### New Features
+* [3c1919c5](https://github.com/sysdiglabs/charts/commit/3c1919c5322d8f3a0336e3f6670f98528cac922f): release agent 13.4.0 ([#1913](https://github.com/sysdiglabs/charts/issues/1913))
+# v1.28.0
+### Chores
+* **agent,sysdig-deploy** [5b43c245](https://github.com/sysdiglabs/charts/commit/5b43c245a82bbddb3b58b1c63d69b846686f1a17): mount /host/dev volume readonly on ebpf mode ([#1901](https://github.com/sysdiglabs/charts/issues/1901))
+# v1.27.18
+### Bug Fixes
+* **agent** [0d1a0673](https://github.com/sysdiglabs/charts/commit/0d1a06734f04032c2fdcd6bd0ca61f384db01ae4): set allowHostPorts when needed ([#1893](https://github.com/sysdiglabs/charts/issues/1893))
+# v1.27.17
+### Bug Fixes
+* **agent** [4d0d730e](https://github.com/sysdiglabs/charts/commit/4d0d730ebaae28fa79e50aed99782bfc7da3615b): add kspm-analyzer specific settings to agent pod when enabled ([#1889](https://github.com/sysdiglabs/charts/issues/1889))
+# v1.27.16
+### New Features
+* [f0c9a27a](https://github.com/sysdiglabs/charts/commit/f0c9a27a39ea5bcfd8e2a71c04d3756e47ac1487): release agent 13.3.3 ([#1881](https://github.com/sysdiglabs/charts/issues/1881))
+# v1.27.15
+### Bug Fixes
+* **agent** [b193d652](https://github.com/sysdiglabs/charts/commit/b193d652c67930d83c62341800474448bde60f14): use dig function for prometheus_exporter settings check ([#1871](https://github.com/sysdiglabs/charts/issues/1871))
+# v1.27.14
+### New Features
+* **agent** [d74fe798](https://github.com/sysdiglabs/charts/commit/d74fe7989e2ef332cef338fe05d7a4d08c1d490c): explicitly naming the prometheus metrics port in the agent daemonset ([#1869](https://github.com/sysdiglabs/charts/issues/1869))
+# v1.27.13
+### Bug Fixes
+* **agent** [7f66f3a5](https://github.com/sysdiglabs/charts/commit/7f66f3a531452ca0bf0bd957e720e5affbddbdad): Fix doc for `windows.image.pullSecrets` ([#1867](https://github.com/sysdiglabs/charts/issues/1867))
+# v1.27.12
+### New Features
+* **agent,node-analyzer** [9c21415e](https://github.com/sysdiglabs/charts/commit/9c21415e63126dbce960d0024bc632ff595ec6d1): add option to set hostNetwork and dnsPolicy ([#1863](https://github.com/sysdiglabs/charts/issues/1863))
+# v1.27.11
+### New Features
+* [b3de2d75](https://github.com/sysdiglabs/charts/commit/b3de2d75f96f4064330a977c0d6f590737d6f461): release agent 13.3.2 ([#1856](https://github.com/sysdiglabs/charts/issues/1856))
+# v1.27.10
+### Chores
+* **node-analyzer,kspm-collector,agent,rapid-response** [fccdc179](https://github.com/sysdiglabs/charts/commit/fccdc1790d42e22c3d605303a4d5f904a0e91439): bump the bitnami/kubectl image reference in charts ([#1772](https://github.com/sysdiglabs/charts/issues/1772))
+# v1.27.9
+### New Features
+* **common,admission-controller,agent,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [07abc204](https://github.com/sysdiglabs/charts/commit/07abc204fd61e4692b48cf36babf0eecae6d154b): Add support for the in1 region ([#1847](https://github.com/sysdiglabs/charts/issues/1847))
+# v1.27.8
+### Bug Fixes
+* **agent** [4aa59d01](https://github.com/sysdiglabs/charts/commit/4aa59d01292f0df09bdbbc00a95c6ddcc5967c66): fix issue on the extraVolume mount for the init container ([#1840](https://github.com/sysdiglabs/charts/issues/1840))
+# v1.27.7
+### Chores
+* **agent** [9be47a0d](https://github.com/sysdiglabs/charts/commit/9be47a0dd84a6053661611e37a9af02eb22ec259): add kmodule.extraVolumes to daemonset ([#1838](https://github.com/sysdiglabs/charts/issues/1838))
+# v1.27.6
+# v1.27.5
+### New Features
+* [d1babb9f](https://github.com/sysdiglabs/charts/commit/d1babb9f03b70f5cebefc42927c7bb778100cf64): release agent 13.3.1 ([#1815](https://github.com/sysdiglabs/charts/issues/1815))
+# v1.27.4
+### Bug Fixes
+* **agent** [7bf898a1](https://github.com/sysdiglabs/charts/commit/7bf898a10d09460864b74cdebe3f03822c99fb23): revert /lib64 volume mount ([#1813](https://github.com/sysdiglabs/charts/issues/1813))
+# v1.27.3
+### Bug Fixes
+* **agent** [884e866d](https://github.com/sysdiglabs/charts/commit/884e866d51066b3525070c764909da586f3d12f3): restore version 13.2.1 ([#1812](https://github.com/sysdiglabs/charts/issues/1812))
+# v1.27.2
+### New Features
+* **agent** [401c54eb](https://github.com/sysdiglabs/charts/commit/401c54eb00421dc36f603d5e00426e2658d5ef80): add /lib64 volume mount ([#1801](https://github.com/sysdiglabs/charts/issues/1801))
+# v1.27.1
+### Chores
+* **agent** [2ea1ea65](https://github.com/sysdiglabs/charts/commit/2ea1ea65866c9e237fc7498e748b84ef990fb5fc): bump the Windows Agent release to 1.0.1 ([#1804](https://github.com/sysdiglabs/charts/issues/1804))
+# v1.27.0
+### New Features
+* **agent** [14e85ea9](https://github.com/sysdiglabs/charts/commit/14e85ea9af9d83e65ad7aa8074b089024b327d73): privileged flag for Sysdig Agent  ([#1743](https://github.com/sysdiglabs/charts/issues/1743))
+# v1.26.0
+### New Features
+* [8c39a945](https://github.com/sysdiglabs/charts/commit/8c39a9451035bf28b8af543fa6726c767927cad1): release agent 13.3.0 ([#1799](https://github.com/sysdiglabs/charts/issues/1799))
+# v1.25.0
+### New Features
+* **agent** [ce6bdcd9](https://github.com/sysdiglabs/charts/commit/ce6bdcd95c97e658a38b2733aa773864494dba7b): add support for Windows Agent ([#1730](https://github.com/sysdiglabs/charts/issues/1730))
+# v1.24.5
+### Chores
+* **agent,cluster-shield,sysdig-deploy,rapid-response,kspm-collector,cluster-scanner** [87059f19](https://github.com/sysdiglabs/charts/commit/87059f1992b6bf1c133ef96937ea2da90fa7d8a1): bump helm-unittest to v0.5.1 ([#1785](https://github.com/sysdiglabs/charts/issues/1785))
+# v1.24.4
+### Bug Fixes
+* **agent** [c85da268](https://github.com/sysdiglabs/charts/commit/c85da2687541c4a1f0bbf85199bbdecdb027dbbd): [SMAGENT-7391] fix path of CA certificate to be used for proxy ([#1776](https://github.com/sysdiglabs/charts/issues/1776))
+# v1.24.3
+### New Features
+* [4c1696d2](https://github.com/sysdiglabs/charts/commit/4c1696d25db079854a120001dbbe3cbce1d79e68): release agent 13.2.1 ([#1769](https://github.com/sysdiglabs/charts/issues/1769))
+# v1.24.2
+### Bug Fixes
+* **agent** [7f087f0b](https://github.com/sysdiglabs/charts/commit/7f087f0b40158e976bc69abddeca0fc0947a986a): add the the missing channel for Agent Local Forwarder ([#1766](https://github.com/sysdiglabs/charts/issues/1766))
+# v1.24.1
+### New Features
+* **agent,kspm-collector,node-analyzer,rapid-response** [c0359500](https://github.com/sysdiglabs/charts/commit/c0359500433949727357cfd918d43d9a0e0dbe11): update kubectl images used for testing purpose ([#1758](https://github.com/sysdiglabs/charts/issues/1758))
+# v1.24.0
+### New Features
+* [67814659](https://github.com/sysdiglabs/charts/commit/678146599e3dde46aa57c025b1db86869838cd9d): release agent 13.2.0 ([#1748](https://github.com/sysdiglabs/charts/issues/1748))
+# v1.23.3
+### Chores
+* **agent** [d1c6a829](https://github.com/sysdiglabs/charts/commit/d1c6a82958f7fe9a443632151e8efc39357a2a68): let memdump override also on secure-light mode ([#1736](https://github.com/sysdiglabs/charts/issues/1736))
+# v1.23.2
+### New Features
+* [69b040bc](https://github.com/sysdiglabs/charts/commit/69b040bc9432a456c70ab37d72d9139398262bf1): release agent 13.1.1 ([#1734](https://github.com/sysdiglabs/charts/issues/1734))
+# v1.23.1
+### Chores
+* **agent** [06666894](https://github.com/sysdiglabs/charts/commit/066668948b814d8d004c53e2ce5e122c41d39d72): allow to configure probes failureThreshold ([#1710](https://github.com/sysdiglabs/charts/issues/1710))
+# v1.23.0
+### New Features
+* [5a4444cb](https://github.com/sysdiglabs/charts/commit/5a4444cbdb59d96c95199e5668b01d1d0b38db6b): release agent 13.1.0 ([#1705](https://github.com/sysdiglabs/charts/issues/1705))
+# v1.22.7
+### New Features
+* **agent** [41107025](https://github.com/sysdiglabs/charts/commit/41107025c4ff1c897fcd1783bc2a2ce7a4dd026a): add tag to distinguish delegated deployment agents ([#1701](https://github.com/sysdiglabs/charts/issues/1701))
+# v1.22.6
+### New Features
+* [359ac387](https://github.com/sysdiglabs/charts/commit/359ac3871f0e38a175802ed0e8f1c620b572e008): release agent 13.0.4 ([#1696](https://github.com/sysdiglabs/charts/issues/1696))
+# v1.22.5
+### New Features
+* **agent** [8977c6f0](https://github.com/sysdiglabs/charts/commit/8977c6f046d1e00b126e96cda77eebae9e382766): revert ensure os-release file is mounted ([#1686](https://github.com/sysdiglabs/charts/issues/1686))
+# v1.22.4
+### Chores
+* **agent** [208fc707](https://github.com/sysdiglabs/charts/commit/208fc7076e97d9d57ea422f7d3461b788f1a2204): revert ensure os-release file is mounted ([#1684](https://github.com/sysdiglabs/charts/issues/1684))
+# v1.22.3
+### New Features
+* **agent** [a8bce052](https://github.com/sysdiglabs/charts/commit/a8bce0521e81091a76754b55f43de3933bf5dde2): ensure os-release file is mounted ([#1625](https://github.com/sysdiglabs/charts/issues/1625))
+# v1.22.2
+### New Features
+* [fcaa2e3a](https://github.com/sysdiglabs/charts/commit/fcaa2e3a55890783c20940527b2f584dd5637f91): release agent 13.0.3 ([#1668](https://github.com/sysdiglabs/charts/issues/1668))
+# v1.22.1
+### New Features
+* [3f99de7f](https://github.com/sysdiglabs/charts/commit/3f99de7f2eedb800cddce479d5d869a46abc76b9): release agent 13.0.2 ([#1658](https://github.com/sysdiglabs/charts/issues/1658))
+# v1.22.0
+# v1.21.1
+### New Features
+* [c99143c9](https://github.com/sysdiglabs/charts/commit/c99143c959ddf19b8335fba3631910c9e4b610f4): release agent 13.0.1 ([#1636](https://github.com/sysdiglabs/charts/issues/1636))
+# v1.21.0
+### New Features
+* [b50da463](https://github.com/sysdiglabs/charts/commit/b50da46344d635678b4ac89c1f3c1cd1a1687d1b): release agent 13.0.0 ([#1628](https://github.com/sysdiglabs/charts/issues/1628))
+# v1.20.2
+### Chores
+* **agent,sysdig-deploy** [59342938](https://github.com/sysdiglabs/charts/commit/59342938d7a1b9f22d93c5f2ebdf1dc164e50ebf): set promscrape port to 9091 by default when gke autopilot is enabled ([#1618](https://github.com/sysdiglabs/charts/issues/1618))
+# v1.20.1
+### Bug Fixes
+* **agent** [1ef8c266](https://github.com/sysdiglabs/charts/commit/1ef8c266d888f460e0ed8b50f00d5d7886a6c155): Properly set ephemeral-storage on kmod container when slim+autopilot are enabled ([#1592](https://github.com/sysdiglabs/charts/issues/1592))
+# v1.20.0
+### New Features
+* **common** [0061b52d](https://github.com/sysdiglabs/charts/commit/0061b52d51f43e1e4d5e2bdf1145be28287d5ce6): add me2 region support ([#1591](https://github.com/sysdiglabs/charts/issues/1591))
+# v1.19.5
+### Bug Fixes
+* **agent,kspm-collector,node-analyzer,rapid-response,sysdig-deploy** [6b1f5818](https://github.com/sysdiglabs/charts/commit/6b1f5818836af26e5d83621049c96ae07d1fe12c): Set test rollout namespace based on required service accounts ([#1593](https://github.com/sysdiglabs/charts/issues/1593))
+# v1.19.4
+### New Features
+* [b4f155be](https://github.com/sysdiglabs/charts/commit/b4f155bee9f48af7df9a9f147cac8d3d349453e7): release agent 12.20.0 ([#1584](https://github.com/sysdiglabs/charts/issues/1584))
+# v1.19.3
+### Bug Fixes
+* **agent** [57626624](https://github.com/sysdiglabs/charts/commit/5762662438ca6c93aa38eed3facf87a7bccd3c52): properly render security block content ([#1577](https://github.com/sysdiglabs/charts/issues/1577))
+# v1.19.2
+### Bug Fixes
+* **agent** [6f49dd5d](https://github.com/sysdiglabs/charts/commit/6f49dd5d86fff854440b811edc2ddecc7e28600a): fix logic to disable network topology and memdump only for secure light ([#1564](https://github.com/sysdiglabs/charts/issues/1564))
+# v1.19.1
+### New Features
+* **agent** [7cf86a62](https://github.com/sysdiglabs/charts/commit/7cf86a6291502fe40624c0eaeba82d4894312093): enable falcobaseline for agent version 12.9.x and above ([#1561](https://github.com/sysdiglabs/charts/issues/1561))
+# v1.19.0
+### New Features
+* [843751e0](https://github.com/sysdiglabs/charts/commit/843751e0a10b86053922b00da98255445b48fd90): release agent 12.19.0 ([#1548](https://github.com/sysdiglabs/charts/issues/1548))
+# v1.18.4
+### New Features
+* **agent** [3be55461](https://github.com/sysdiglabs/charts/commit/3be55461cc3b28f710c1000583018c9584616681): add tolerations for rke2 master nodes ([#1539](https://github.com/sysdiglabs/charts/issues/1539))
+# v1.18.3
+### Bug Fixes
+* **agent,sysdig-deploy** [d8e38523](https://github.com/sysdiglabs/charts/commit/d8e38523b3e94f0a6311bb5be8f5135e56d47f1c): /var/data volume mount ([#1532](https://github.com/sysdiglabs/charts/issues/1532))
+# v1.18.2
+### New Features
+* **agent** [d86d3be1](https://github.com/sysdiglabs/charts/commit/d86d3be1eb2ee7da6b135f5262457c6f70f98264): update the readiness probes to use localhost ([#1530](https://github.com/sysdiglabs/charts/issues/1530))
+# v1.18.1
+### Bug Fixes
+* **agent** [74d90fca](https://github.com/sysdiglabs/charts/commit/74d90fcae6332638233fb3a959dd724b30d82989): ephemeral-storage on gke autopilot and slim enabled ([#1519](https://github.com/sysdiglabs/charts/issues/1519))
+# v1.18.0
+### New Features
+* **agent** [d17d3f80](https://github.com/sysdiglabs/charts/commit/d17d3f8030c6c2c50d659b6714439f49e68f1d85): mount agent http-proxy credentials as secret ([#1517](https://github.com/sysdiglabs/charts/issues/1517))
 # v1.17.3
 ### Bug Fixes
 * **agent** [b8c3e335](https://github.com/sysdiglabs/charts/commit/b8c3e3351824f6b0db17b1c0dac790b95efb7b33): GKE Autopilot do not accept HTTP probe ([#1508](https://github.com/sysdiglabs/charts/issues/1508))

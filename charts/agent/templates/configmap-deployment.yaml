@@ -39,8 +39,11 @@ data:
 {{- $_ := mergeOverwrite .Values.secure (dict "enabled" false) }}
 {{- (include "agent.secureFeatures" .) | nindent 4 }}
 {{- include "agent.logSettings" . }}
+{{- $delegatedAgentTag := "com.sysdig.delegated-agent-deployment:true" }}
 {{- if .Values.global.sysdig.tags }}
-    tags: {{ include "agent.tags" . }}
+    tags: {{ printf "%s,%s" (include "agent.tags" .) $delegatedAgentTag }}
+{{- else }}
+    tags: {{ $delegatedAgentTag }}
 {{- end }}
 {{/*
   Checking here the user is using Custom CA and if http_proxy.ssl = true
@@ -48,7 +51,7 @@ data:
 */}}
 {{- $baseSettings := .Values.sysdig.settings -}}
 {{- if and (eq (include "sysdig.custom_ca.enabled"  (dict "global" .Values.global.ssl "component" .Values.ssl)) "true") (.Values.sysdig.settings) (hasKey .Values.sysdig.settings "http_proxy") (hasKey .Values.sysdig.settings.http_proxy "ssl") (eq (get .Values.sysdig.settings.http_proxy "ssl") true) }}
-  {{- $caFilePath := printf "%s%s" "/etc/ca-certs/" (include "sysdig.custom_ca.keyName"  (dict "global" .Values.global.ssl "component" .Values.ssl)) }}
+  {{- $caFilePath := printf "%s%s" "certificates/" (include "sysdig.custom_ca.keyName"  (dict "global" .Values.global.ssl "component" .Values.ssl)) }}
   {{- $mergedSettings := mergeOverwrite $baseSettings (dict "http_proxy" (dict "ca_certificate" $caFilePath)) -}}
   {{- $finalSettings := mergeOverwrite $mergedSettings $requiredOverrides -}}
   {{ toYaml $finalSettings | nindent 4 }}

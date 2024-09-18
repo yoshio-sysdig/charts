@@ -10,6 +10,66 @@ Manual edits are supported only below '## Change Log' and should be used
 exclusively to fix incorrect entries and not to add new ones.
 
 ## Change Log
+# v1.4.0
+### Chores
+* **registry-scanner** [8aadffd0](https://github.com/sysdiglabs/charts/commit/8aadffd0460d8633d402a645ad4f3b4ac3f2c059): Update to v0.5.0 ([#1925](https://github.com/sysdiglabs/charts/issues/1925))
+# v1.3.5
+### Chores
+* **registry-scanner** [579689ac](https://github.com/sysdiglabs/charts/commit/579689ac06348c16a2052eef8cd8ad25018e30d6): Update to v0.4.0 ([#1902](https://github.com/sysdiglabs/charts/issues/1902))
+# v1.3.4
+### New Features
+* **registry-scanner** [72af93a2](https://github.com/sysdiglabs/charts/commit/72af93a214af15586ccb11b9f98d1ec35fe93ff3): allow nodeselector configuration ([#1904](https://github.com/sysdiglabs/charts/issues/1904))
+# v1.3.3
+### Chores
+* **registry-scanner** [ddb44159](https://github.com/sysdiglabs/charts/commit/ddb4415973724e3ce3309b519cffa25b2c7d4e52): Update to v0.3.0 ([#1884](https://github.com/sysdiglabs/charts/issues/1884))
+# v1.3.2
+### Chores
+* **registry-scanner** [49d834aa](https://github.com/sysdiglabs/charts/commit/49d834aaa2edf62a6a950acea6c6a5959ad6b163): Update to v0.2.73 ([#1876](https://github.com/sysdiglabs/charts/issues/1876))
+# v1.3.1
+### Chores
+* **registry-scanner** [c5e38597](https://github.com/sysdiglabs/charts/commit/c5e38597ecc15bb94994dd341d2101a1d518ec4c): Update to v0.2.71 ([#1796](https://github.com/sysdiglabs/charts/issues/1796))
+# v1.3.0
+### New Features
+* **registry-scanner** [7cae555e](https://github.com/sysdiglabs/charts/commit/7cae555e5042913f5613d31bb1b580b444604695): add the registry retry params [internal] ([#1765](https://github.com/sysdiglabs/charts/issues/1765))
+# v1.2.0
+### New Features
+* **registry-scanner** [bf5495fb](https://github.com/sysdiglabs/charts/commit/bf5495fb3c74a19d625f12e2c231e7391e33b1a0): add support for ocp registry ([#1711](https://github.com/sysdiglabs/charts/issues/1711))
+# v1.1.35
+### Chores
+* **registry-scanner** [384c3e68](https://github.com/sysdiglabs/charts/commit/384c3e685b83dd59008c54e39026221e19de7d65): Update to v0.2.69 ([#1755](https://github.com/sysdiglabs/charts/issues/1755))
+# v1.1.34
+### Chores
+* **registry-scanner** [6c45dbd6](https://github.com/sysdiglabs/charts/commit/6c45dbd6669cd4056c4859110edbfab5beb94432): Update to v0.2.68 ([#1674](https://github.com/sysdiglabs/charts/issues/1674))
+# v1.1.33
+### New Features
+* **registry-scanner** [fe410442](https://github.com/sysdiglabs/charts/commit/fe410442316f78843474a8d3dd4320a929088c82): Add podAnnotations to configmap ([#1664](https://github.com/sysdiglabs/charts/issues/1664))
+# v1.1.32
+### Chores
+* **registry-scanner** [856f8dd0](https://github.com/sysdiglabs/charts/commit/856f8dd079896a2fa8ed685be4cb8aad1082734e): Update to v0.2.67 ([#1615](https://github.com/sysdiglabs/charts/issues/1615))
+# v1.1.31
+### Chores
+* **registry-scanner** [c07d5266](https://github.com/sysdiglabs/charts/commit/c07d5266f10360376835e1b27d4f9d0f5f4514bc): Update to v0.2.66 ([#1598](https://github.com/sysdiglabs/charts/issues/1598))
+# v1.1.30
+### Chores
+* **registry-scanner** [a74e5bff](https://github.com/sysdiglabs/charts/commit/a74e5bffebb977bfd9f85f6f765c0958227d97cc): Update to v0.2.65 ([#1590](https://github.com/sysdiglabs/charts/issues/1590))
+# v1.1.29
+### Chores
+* **registry-scanner** [888b4ced](https://github.com/sysdiglabs/charts/commit/888b4ced7993b73601a65ac5310a58475fd17d9f): Update to v0.2.64 ([#1574](https://github.com/sysdiglabs/charts/issues/1574))
+# v1.1.28
+### Chores
+* **registry-scanner** [23061172](https://github.com/sysdiglabs/charts/commit/2306117241e774eec27378af67da4e4882534fb3): Update to v0.2.63 ([#1571](https://github.com/sysdiglabs/charts/issues/1571))
+# v1.1.27
+### Chores
+* **registry-scanner** [2f36821c](https://github.com/sysdiglabs/charts/commit/2f36821c8d976a493bcae190bf893ca9d4fac534): Update to v0.2.62 ([#1554](https://github.com/sysdiglabs/charts/issues/1554))
+# v1.1.26
+### New Features
+* **registry-scanner** [023b8ee4](https://github.com/sysdiglabs/charts/commit/023b8ee4c84712d183a13d523427ab745d4a5c71): ovveride platform scanning logic ([#1496](https://github.com/sysdiglabs/charts/issues/1496))
+# v1.1.25
+### New Features
+* **sysdig-deploy** [49fe006f](https://github.com/sysdiglabs/charts/commit/49fe006fb0ff206c7b566a45bfa5f71713d5ad0a): Add prerequisite information on the chart ([#1468](https://github.com/sysdiglabs/charts/issues/1468))
+# v1.1.24
+### Chores
+* **admission-controller,cloud-connector,cluster-scanner,node-analyzer,registry-scanner,sysdig-deploy** [9d5d8c58](https://github.com/sysdiglabs/charts/commit/9d5d8c5809d35bcb5e8060ccc454f446cb1e3bc7): change charts ownership ([#1461](https://github.com/sysdiglabs/charts/issues/1461))
 # v1.1.23
 ### Chores
 * **registry-scanner** [39d7ee0f](https://github.com/sysdiglabs/charts/commit/39d7ee0f1c2d9d5d44992f3a1467bc126872534c): Update to v0.2.60 ([#1512](https://github.com/sysdiglabs/charts/issues/1512))

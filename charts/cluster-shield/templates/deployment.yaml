@@ -1,0 +1,183 @@
+{{- $secrets := (include "cluster-shield.secret_mounts" .) | fromYamlArray }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "cluster-shield.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "cluster-shield.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    {{- toYaml .Values.updateStrategy | nindent 4 }}
+  selector:
+    matchLabels:
+      {{- include "cluster-shield.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "cluster-shield.labels" . | nindent 8 }}
+  {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{/* sysdig-deploy support start */}}
+      {{- else if .Values.global.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.global.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      {{/* sysdig-deploy support end */}}
+      {{- if .Values.hostNetwork }}
+      hostNetwork: true
+      dnsPolicy: {{ default "ClusterFirstWithHostNet" .Values.dnsPolicy }}
+      {{- else if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      {{- end }}
+      serviceAccountName: {{ include "cluster-shield.serviceAccountName" . }}
+      containers:
+        - name: "cluster-shield"
+          {{- if ne "true" (include "cluster-shield.isSingleProcess" .) }}
+          securityContext:
+            privileged: true
+            runAsNonRoot: false
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: true
+          {{- end }}
+          image: "{{ include "cluster-shield.repository" . }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy | default .Values.global.image.pullPolicy | default "IfNotPresent" }}
+          args: [ {{ (include "cluster-shield.command" .) | quote }} ]
+          ports:
+            - name: monitoring
+              containerPort: {{ .Values.cluster_shield.monitoring_port }}
+              protocol: TCP
+            {{- if .Values.cluster_shield.features.admission_control.enabled }}
+            - name: admission
+              containerPort: {{ .Values.cluster_shield.features.admission_control.http_port }}
+              protocol: TCP
+            {{- end }}
+            {{- if .Values.cluster_shield.features.audit.enabled }}
+            - name: audit
+              containerPort: {{ .Values.cluster_shield.features.audit.http_port }}
+              protocol: TCP
+            {{- end }}
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: monitoring
+            {{- if and (.Values.probes) (.Values.probes.liveness) }}
+            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
+            {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: monitoring
+            {{- if and (.Values.probes) (.Values.probes.readiness) }}
+            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
+            {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - mountPath: /etc/sysdig/config/
+              name: cluster-shield
+            {{- range $secretName :=  $secrets }}
+            - mountPath: {{ printf "/etc/sysdig/secret-files/%s" $secretName }}
+              name: {{ printf "secret-%s" $secretName }}
+            {{- end }}
+            {{- if eq (include "cluster-shield.needCerts" .) "true" }}
+            - name: cert
+              mountPath: /cert
+              readOnly: true
+            {{- end }}
+            {{- if eq (include "cluster-shield.custom_ca.enabled" .) "true" }}
+            - name: ca-cert
+              mountPath: /ca-certs
+              readOnly: true
+            {{- end }}
+          env:
+            - name: KUBE_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: KUBE_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: KUBE_SERVICE_NAME
+              value: {{ include "cluster-shield.clusterScannerServiceName" . }}
+            {{- if eq (include "cluster-shield.custom_ca.enabled" .) "true" }}
+            - name: SSL_CERT_FILE
+              value: /ca-certs/{{- include "cluster-shield.custom_ca.keyName" . -}}
+            {{- end }}
+            {{- if or (or .Values.proxy.httpProxy .Values.proxy.httpsProxy) (or .Values.global.proxy.httpProxy .Values.global.proxy.httpsProxy) }}
+            - name: HTTP_PROXY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cluster-shield.proxySecretName" . }}
+                  key: httpProxy
+                  optional: true
+            - name: HTTPS_PROXY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cluster-shield.proxySecretName" . }}
+                  key: httpsProxy
+                  optional: true
+            - name: NO_PROXY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "cluster-shield.proxySecretName" . }}
+                  key: noProxy
+                  optional: true
+            {{- end }}
+      volumes:
+        - name: cluster-shield
+          configMap:
+            name: {{ include "cluster-shield.configmapName" . }}
+        {{- range $secretName :=  $secrets }}
+        - name: {{ printf "secret-%s" $secretName }}
+          secret:
+            secretName: {{ $secretName }}
+        {{- end }}
+        {{- if eq (include "cluster-shield.needCerts" .) "true" }}
+        - name: cert
+          secret:
+            secretName: {{ include "cluster-shield.tlsCertsSecretName" . }}
+        {{- end }}
+        {{- if eq (include "cluster-shield.custom_ca.useValues" .) "true" }}
+        - name: ca-cert
+          secret:
+            secretName: {{ include "cluster-shield.customCASecretName" . }}
+        {{- else if eq (include "cluster-shield.custom_ca.useExistingSecret" .) "true" }}
+        - name: ca-cert
+          secret:
+            secretName: {{ .Values.ca.existingCaSecret | default .Values.global.ssl.ca.existingCaSecret }}
+        {{- else if eq (include "cluster-shield.custom_ca.useExistingConfigMap" .) "true" }}
+        - name: ca-cert
+          configMap:
+            name:  {{ .Values.ca.existingCaConfigMap | default .Values.global.ssl.ca.existingCaConfigMap }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if or .Values.createPriorityClass .Values.priorityClassName }}
+      priorityClassName: "{{ include "cluster-shield.priorityClassName" . }}"
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

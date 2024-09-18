@@ -7,6 +7,21 @@ templates:
   - templates/daemonset.yaml
   - templates/deployment.yaml
   - templates/serviceaccount.yaml
+kubernetesProvider:
+  scheme:
+    "v1/Node":
+      gvr:
+        version: "v1"
+        resource: "nodes"
+      namespaced: false
+  objects:
+  - apiVersion: v1
+    kind: Node
+    metadata:
+      name: fakenode
+    status:
+      nodeInfo:
+        osImage: fake-os-image
 tests:
   - it: Enable Delegated Agent Deployment
     set:
@@ -480,6 +495,34 @@ tests:
             sysdig_capture_enabled: false
     templates:
       - templates/configmap.yaml
+      - templates/configmap-deployment.yaml
+
+  - it: Checking that delegated deployment tag is set in deployment configmap with global tags
+    set:
+      global:
+        sysdig:
+          tags:
+            foo: bar
+      delegatedAgentDeployment:
+        enabled: true
+    asserts:
+      - matchRegex:
+          path: data['dragent.yaml']
+          pattern: |
+            tags: foo:bar,com.sysdig.delegated-agent-deployment:true
+    templates:
+      - templates/configmap-deployment.yaml
+
+  - it: Checking that delegated deployment tag is set in deployment configmap
+    set:
+      delegatedAgentDeployment:
+        enabled: true
+    asserts:
+      - matchRegex:
+          path: data['dragent.yaml']
+          pattern: |
+            tags: com.sysdig.delegated-agent-deployment:true
+    templates:
       - templates/configmap-deployment.yaml
 
   - it: Ensure sanity of Agent service account

@@ -130,6 +130,41 @@ tests:
           path: data['config.yaml']
           pattern: allowListRegions:\n\s*- us-west-1
 
+  - it: nodeSelector variables reaches the configmap if set on root level
+    set:
+      nodeSelector:
+        department: engineering
+    asserts:
+      - matchRegex:
+          path: data['config.yaml']
+          pattern: nodeSelector:\n\s*department:\s*engineering
+
+  - it: nodeSelector variables reaches the configmap if set on config.scan.jobs level
+    set:
+      config:
+        scan:
+          jobs:
+            nodeSelector:
+              department: engineering
+    asserts:
+      - matchRegex:
+          path: data['config.yaml']
+          pattern: nodeSelector:\n\s*department:\s*engineering
+
+  - it: nodeSelector variables reaches the configmap and overrides root level if both are set
+    set:
+      nodeSelector:
+        department: engineering
+      config:
+        scan:
+          jobs:
+            nodeSelector:
+              department: human-resources
+    asserts:
+      - matchRegex:
+          path: data['config.yaml']
+          pattern: nodeSelector:\n\s*department:\s*human-resources
+
   - it: allowListMemberAccountIDs variable reach the configmap if is set
     set:
       config:
@@ -139,3 +174,17 @@ tests:
       - matchRegex:
           path: data['config.yaml']
           pattern: allowListMemberAccountIDs:\n\s*- 123456789
+  - it: platform scanning is not disable by default
+    asserts:
+      - matchRegex:
+          path: data['config.yaml']
+          pattern: scan:((.|\n)*)disablePlatformScanning:\s*false
+  - it: force scanning on the client component regardless of backend config
+    set:
+      config:
+        scan:
+          disablePlatformScanning: "true"
+    asserts:
+      - matchRegex:
+          path: data['config.yaml']
+          pattern: scan:((.|\n)*)disablePlatformScanning:\s*true

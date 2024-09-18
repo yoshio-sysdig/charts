@@ -28,8 +28,24 @@ spec:
         app.kubernetes.io/name: {{ include "nodeAnalyzer.name" . }}
 {{ include "daemonset.labels" . | indent 8 }}
 {{ include "nodeAnalyzer.labels" . | indent 8 }}
-{{- if .Values.daemonset.annotations }}
       annotations:
+        checksum/config-benchmark: {{ include (print $.Template.BasePath "/configmap-benchmark-runner.yaml") . | sha256sum | quote  }}
+        checksum/config-host-analyzer: {{ include (print $.Template.BasePath "/configmap-host-analyzer.yaml") . | sha256sum | quote  }}
+        checksum/config-image-analyzer: {{ include (print $.Template.BasePath "/configmap-image-analyzer.yaml") . | sha256sum | quote  }}
+        {{- if and .Values.nodeAnalyzer.deploy (not .Values.gke.autopilot) (include "nodeAnalyzer.deployHostScanner" .) }}
+        checksum/config-host-scanner: {{ include (print $.Template.BasePath "/configmap-host-scanner.yaml") . | sha256sum | quote  }}
+        {{- end }}
+        {{- if .Values.global.kspm.deploy }}
+        checksum/config-kspm-analyzer: {{ include (print $.Template.BasePath "/configmap-kspm-analyzer.yaml") . | sha256sum | quote  }}
+        {{- end }}
+        {{- if include "nodeAnalyzer.deployRuntimeScanner" . }}
+        checksum/config-runtime-scanner: {{ include (print $.Template.BasePath "/runtimeScanner/runtime-scanner-configmap.yaml") . | sha256sum | quote  }}
+        {{- end }}
+        checksum/secret: {{ include (print $.Template.BasePath "/secrets.yaml") . | sha256sum | quote  }}
+        checksum/clusterrole: {{ include (print $.Template.BasePath "/clusterrole-node-analyzer.yaml") . | sha256sum | quote  }}
+        checksum/clusterrolebinding: {{ include (print $.Template.BasePath "/clusterrolebinding-node-analyzer.yaml") . | sha256sum | quote  }}
+        checksum/serviceaccount: {{ include (print $.Template.BasePath "/serviceaccount-node-analyzer.yaml") . | sha256sum | quote  }}
+{{- if .Values.daemonset.annotations }}
         {{ toYaml .Values.daemonset.annotations | nindent 8 }}
 {{- end }}
     spec:
@@ -75,6 +91,16 @@ spec:
         - name: root-vol
           hostPath:
             path: /
+        {{- end }}
+        {{- if .Values.nodeAnalyzer.bottlerocket.enabled }}
+        - name: apiclient
+          hostPath:
+            path: {{ .Values.nodeAnalyzer.bottlerocket.apiClientPath }}
+            type: ""
+        - name: apiserver-socket
+          hostPath:
+            path: {{ .Values.nodeAnalyzer.bottlerocket.apiServerSocketPath }}
+            type: ""
         {{- end }}
         - name: tmp-vol
           {{- if .Values.nodeAnalyzer.runtimeScanner.storageClassName }}
@@ -128,10 +154,13 @@ spec:
         {{- toYaml .Values.global.image.pullSecrets | nindent 8 }}
       {{- end }}
       terminationGracePeriodSeconds: 5
-      {{- if or (include "nodeAnalyzer.deployBenchmarkRunner" .) (include "nodeAnalyzer.deployHostScanner" .) }}
+      {{- if or (include "nodeAnalyzer.deployBenchmarkRunner" .) (include "nodeAnalyzer.deployHostScanner" .) .Values.hostNetwork }}
       # Use the Host Network Namespace.
       # This is required by the Benchmark and the HostScanner containers to determine the hostname and host mac address
       hostNetwork: true
+      dnsPolicy: {{ default "ClusterFirstWithHostNet" .Values.dnsPolicy }}
+      {{- else if .Values.dnsPolicy }}
+      dnsPolicy: {{ .Values.dnsPolicy }}
       {{- end }}
       {{- if include "nodeAnalyzer.useHostPID" . }}
       # Use the Host PID namespace.
@@ -213,6 +242,12 @@ spec:
                 name: {{ .Release.Name }}-kspm-analyzer
                 key: nats_insecure
                 optional: true
+          - name: TLS_SKIP_VERIFY
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Release.Name }}-kspm-analyzer
+                key: nats_insecure
+                optional: true
           - name: HTTP_PROXY
             valueFrom:
               configMapKeyRef:
@@ -243,12 +278,22 @@ spec:
                 name: {{ .Release.Name }}-kspm-analyzer
                 key: nats_max_reconnect
                 optional: true
+          - name: NATS_MAX_RECONNECT_FAILURES
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Release.Name }}-kspm-analyzer
+                key: nats_max_reconnect_failures
+                optional: true
           {{- if .Values.global.sysdig.tags }}
           - name: TAGS
             value: {{ include "agent.tags" . }}
           {{- end }}
           {{- if eq (include "sysdig.custom_ca.enabled"  (dict "global" .Values.global.ssl "component" .Values.nodeAnalyzer.ssl)) "true" }}
           - name: SSL_CERT_FILE
+            value: /ca-certs/{{- include "sysdig.custom_ca.keyName"  (dict "global" .Values.global.ssl "component" .Values.nodeAnalyzer.ssl) -}}
+          {{- end }}
+          {{- if eq (include "sysdig.custom_ca.enabled"  (dict "global" .Values.global.ssl "component" .Values.nodeAnalyzer.ssl)) "true" }}
+          - name: TLS_CA_PATHS
             value: /ca-certs/{{- include "sysdig.custom_ca.keyName"  (dict "global" .Values.global.ssl "component" .Values.nodeAnalyzer.ssl) -}}
           {{- end }}
           {{- range $key, $value := .Values.nodeAnalyzer.kspmAnalyzer.env }}
@@ -265,6 +310,13 @@ spec:
           - name: ca-cert
             mountPath: /ca-certs
             readOnly: true
+          {{- end }}
+          {{- if .Values.nodeAnalyzer.bottlerocket.enabled }}
+          - name: apiclient
+            mountPath: /usr/bin/apiclient
+            readOnly: true
+          - name: apiserver-socket
+            mountPath: /run/api.sock
           {{- end }}
       # kspm-analyzer
       {{- end }}
@@ -609,14 +661,14 @@ spec:
           httpGet:
             port: {{ .Values.nodeAnalyzer.runtimeScanner.probesPort }}
             path: /probes/liveness
-          initialDelaySeconds: 90
-          periodSeconds: 3
+          initialDelaySeconds: {{ .Values.nodeAnalyzer.runtimeScanner.livenessProbe.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.nodeAnalyzer.runtimeScanner.livenessProbe.probe.periodSeconds }}
         readinessProbe:
           httpGet:
             port: {{ .Values.nodeAnalyzer.runtimeScanner.probesPort }}
             path: /probes/readiness
-          initialDelaySeconds: 90
-          periodSeconds: 3
+          initialDelaySeconds: {{ .Values.nodeAnalyzer.runtimeScanner.readinessProbe.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.nodeAnalyzer.runtimeScanner.readinessProbe.probe.periodSeconds }}
         securityContext:
             privileged: true
         resources:
@@ -712,22 +764,18 @@ spec:
           - name: "{{ $key }}"
             value: "{{ $value }}"
           {{- end }}
-          {{- if .Values.nodeAnalyzer.runtimeScanner.settings.eveEnabled }}
           - name: EVE_ENABLED
             valueFrom:
               configMapKeyRef:
                 name: {{ .Release.Name }}-runtime-scanner
                 key: eve_enabled
                 optional: true
-          {{- end }}
-          {{- if .Values.nodeAnalyzer.runtimeScanner.eveConnector.deploy }}
           - name: EVE_INTEGRATION_ENABLED
             valueFrom:
               configMapKeyRef:
                 name: {{ .Release.Name }}-runtime-scanner
                 key: eve_integration_enabled
                 optional: true
-          {{- end }}
         volumeMounts:
           # Needed for some IBM OpenShift clusters which symlink /var/run/containers/storage to contents of /var/data by default
           - mountPath: /var/data
@@ -760,14 +808,14 @@ spec:
           httpGet:
             port: {{ .Values.nodeAnalyzer.hostScanner.probesPort }}
             path: /probes/liveness
-          initialDelaySeconds: 90
-          periodSeconds: 3
+          initialDelaySeconds: {{ .Values.nodeAnalyzer.hostScanner.livenessProbe.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.nodeAnalyzer.hostScanner.livenessProbe.probe.periodSeconds }}
         readinessProbe:
           httpGet:
             port: {{ .Values.nodeAnalyzer.hostScanner.probesPort }}
             path: /probes/readiness
-          initialDelaySeconds: 90
-          periodSeconds: 3
+          initialDelaySeconds: {{ .Values.nodeAnalyzer.hostScanner.readinessProbe.probe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.nodeAnalyzer.hostScanner.readinessProbe.probe.periodSeconds }}
         securityContext:
           # The privileged flag is necessary for OCP 4.x and other Kubernetes setups that deny host filesystem access to
           # running containers by default regardless of volume mounts.
@@ -868,8 +916,27 @@ spec:
                 optional: true
           - name: TMPDIR
             value: "/tmp"
+          - name: PROBES_ENABLED
+            value: "true"
           - name: PROBES_PORT
             value: {{ .Values.nodeAnalyzer.hostScanner.probesPort | quote }}
+          - name: PROM_ENABLED
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Release.Name }}-host-scanner
+                key: prom_enabled
+          - name: PROM_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Release.Name }}-host-scanner
+                key: prom_port
+                optional: true
+          - name: PROM_ENDPOINT
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Release.Name }}-host-scanner
+                key: prom_endpoint
+                optional: true
           {{- if eq (include "sysdig.custom_ca.enabled"  (dict "global" .Values.global.ssl "component" .Values.nodeAnalyzer.ssl)) "true" }}
           - name: SSL_CERT_FILE
             value: /ca-certs/{{- include "sysdig.custom_ca.keyName"  (dict "global" .Values.global.ssl "component" .Values.nodeAnalyzer.ssl) -}}
@@ -877,6 +944,24 @@ spec:
           {{- range $key, $value := .Values.nodeAnalyzer.hostScanner.env }}
           - name: "{{ $key }}"
             value: "{{ $value }}"
+          {{- end }}
+
+          {{- if .Values.nodeAnalyzer.hostScanner.scanContainers.enabled }}
+          # Container scanner
+          - name: SCAN_CONTAINERS_ENABLED
+            value: "true"
+          - name: DOCKER_SOCKET_PATHS
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Release.Name }}-host-scanner
+                key: docker_socket_path
+                optional: true
+          - name: PODMAN_SOCKET_PATHS
+            valueFrom:
+              configMapKeyRef:
+                name: {{ .Release.Name }}-host-scanner
+                key: podman_socket_path
+                optional: true
           {{- end }}
         volumeMounts:
           - mountPath: /tmp

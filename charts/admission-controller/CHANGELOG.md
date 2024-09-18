@@ -10,6 +10,74 @@ Manual edits are supported only below '## Change Log' and should be used
 exclusively to fix incorrect entries and not to add new ones.
 
 ## Change Log
+# v0.16.6
+### Chores
+* **admission-controller** [cb767c33](https://github.com/sysdiglabs/charts/commit/cb767c33699478121191eb221fe3a451706f41c1): Update to v3.9.47 ([#1866](https://github.com/sysdiglabs/charts/issues/1866))
+# v0.16.5
+### Bug Fixes
+* **admission-controller** [c39e2b78](https://github.com/sysdiglabs/charts/commit/c39e2b78f5cd376a618991f835134de965a6b682): Fix proxy dns resolution ([#1885](https://github.com/sysdiglabs/charts/issues/1885))
+# v0.16.4
+### New Features
+* **common,admission-controller,agent,cluster-scanner,kspm-collector,node-analyzer,rapid-response** [07abc204](https://github.com/sysdiglabs/charts/commit/07abc204fd61e4692b48cf36babf0eecae6d154b): Add support for the in1 region ([#1847](https://github.com/sysdiglabs/charts/issues/1847))
+# v0.16.3
+### Chores
+* **admission-controller** [421f5573](https://github.com/sysdiglabs/charts/commit/421f5573b1d09aea2000b28eefb3199f71387e7f): Update to v3.9.46 ([#1753](https://github.com/sysdiglabs/charts/issues/1753))
+# v0.16.2
+### Chores
+* **admission-controller** [1f2bef59](https://github.com/sysdiglabs/charts/commit/1f2bef5901e1cbf0622c92f037d7b674705b6204): Update to v3.9.44 ([#1731](https://github.com/sysdiglabs/charts/issues/1731))
+# v0.16.1
+### New Features
+* **admission_controller** [4c07fbd2](https://github.com/sysdiglabs/charts/commit/4c07fbd2c8c7144bef6ca7c3fba75a150775117b): release with AC Webhook latest version, 1.27.3 ([#1708](https://github.com/sysdiglabs/charts/issues/1708))
+
+    * * Fixed a bug when doing metadata enrichment for Pods resources
+# v0.16.0
+### New Features
+* **admission-controller** [7128e512](https://github.com/sysdiglabs/charts/commit/7128e51219382f536fb61bded24414d97fb1eb42): Support for VM checks ([#1651](https://github.com/sysdiglabs/charts/issues/1651))
+
+    * * Added support for VM checks, disabled by default
+# v0.15.4
+### Chores
+* **admission-controller** [990d0163](https://github.com/sysdiglabs/charts/commit/990d0163c053049e5204c0f805765cfb78f86992): Update to v3.9.42 ([#1676](https://github.com/sysdiglabs/charts/issues/1676))
+# v0.15.3
+### Chores
+* **admission-controller** [2ee4a064](https://github.com/sysdiglabs/charts/commit/2ee4a0646896e352c49e90e1039a78f9101656f4): Update to v3.9.41 ([#1661](https://github.com/sysdiglabs/charts/issues/1661))
+# v0.15.2
+### New Features
+* **admission-controller,node-analyzer** [9e8cc902](https://github.com/sysdiglabs/charts/commit/9e8cc902897f4185f9f56b825d6741539999fcf9): set dnsPolicy when we allow hostNetwork in the Pod  ([#1652](https://github.com/sysdiglabs/charts/issues/1652))
+# v0.15.1
+### Chores
+* **admission-controller** [19cf4fab](https://github.com/sysdiglabs/charts/commit/19cf4fabb6f39b3bdc07f1471cf55536751caa88): Update to v3.9.40 ([#1648](https://github.com/sysdiglabs/charts/issues/1648))
+# v0.15.0
+### New Features
+* **common** [0061b52d](https://github.com/sysdiglabs/charts/commit/0061b52d51f43e1e4d5e2bdf1145be28287d5ce6): add me2 region support ([#1591](https://github.com/sysdiglabs/charts/issues/1591))
+# v0.14.24
+# v0.14.23
+### Minor changes
+* Bump inline scan service image version
+# v0.14.22
+### Chores
+* **admission-controller** [14e71c31](https://github.com/sysdiglabs/charts/commit/14e71c31b5e5b78c3cad1bb2cd2ccc254e824798): use denyOnError and timeouts settings for KSPM ([#1589](https://github.com/sysdiglabs/charts/issues/1589))
+# v0.14.21
+### Chores
+* **admission-controller** [f7c813c0](https://github.com/sysdiglabs/charts/commit/f7c813c0d4ba16edf1e93505f6034caf33e706e1): Release admission controller v3.9.37 ([#1587](https://github.com/sysdiglabs/charts/issues/1587))
+# v0.14.20
+### New Features
+* **KSPM admission controller** [48a4f16f](https://github.com/sysdiglabs/charts/commit/48a4f16f19d62cc6f11c757d6f41571dc119a2d5): SSPROD-35354 - Make Dry Run mode configurable to a user in Chart Values. ([#1560](https://github.com/sysdiglabs/charts/issues/1560))
+# v0.14.19
+### Chores
+* [45895438](https://github.com/sysdiglabs/charts/commit/4589543862f78502932dca1c4e37a7d0d89259ff): migrate default branch to main ([#1556](https://github.com/sysdiglabs/charts/issues/1556))
+# v0.14.18
+### Chores
+* **admission-controller** [3915ce10](https://github.com/sysdiglabs/charts/commit/3915ce106f7b347db99d1c9632887cbf33f4c950): add ports to service conditionally ([#1558](https://github.com/sysdiglabs/charts/issues/1558))
+# v0.14.17
+### Chores
+* **admission-controller** [7c1a99a2](https://github.com/sysdiglabs/charts/commit/7c1a99a2fa9d164ff0a325ccbffd84fbc2c5123f): Update to v3.9.36 ([#1529](https://github.com/sysdiglabs/charts/issues/1529))
+# v0.14.16
+### New Features
+* **sysdig-deploy** [49fe006f](https://github.com/sysdiglabs/charts/commit/49fe006fb0ff206c7b566a45bfa5f71713d5ad0a): Add prerequisite information on the chart ([#1468](https://github.com/sysdiglabs/charts/issues/1468))
+# v0.14.15
+### Chores
+* **admission-controller,cloud-connector,cluster-scanner,node-analyzer,registry-scanner,sysdig-deploy** [9d5d8c58](https://github.com/sysdiglabs/charts/commit/9d5d8c5809d35bcb5e8060ccc454f446cb1e3bc7): change charts ownership ([#1461](https://github.com/sysdiglabs/charts/issues/1461))
 # v0.14.14
 ### Chores
 * **admission-controller** [8622c6c7](https://github.com/sysdiglabs/charts/commit/8622c6c7e1acc055ee7e8015c5204848f741f100): Update to v3.9.35 ([#1454](https://github.com/sysdiglabs/charts/issues/1454))
